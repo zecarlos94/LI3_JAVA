@@ -9,7 +9,7 @@ public class ReadTXT {
 	BufferedReader br = null;
 	try {
 		String line;
-		br = new BufferedReader(new FileReader("C:\\Users\\José Carlos\\Desktop\\compras.txt"));
+		br = new BufferedReader(new FileReader("/Users/zecarlos/LI3_JAVA/compras.txt"));
 		while ((line = br.readLine()) != null) {
 		   System.out.println(line);
 		   StringTokenizer stringTokenizer = new StringTokenizer(line, " ");
