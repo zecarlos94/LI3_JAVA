@@ -1,8 +1,12 @@
 #BlueJ class context
 comment0.params=
 comment0.target=Catalogo_Produtos()
-comment0.text=\r\n\ COnstrutor\ para\ objetos\ da\ classe\ Cat\u00E1logo_Produtos\r\n
-comment1.params=y
-comment1.target=int\ sampleMethod(int)
-comment1.text=\r\n\ Exemplo\ de\ m\u00E9todo\ -\ substitua\ este\ coment\u00E1rio\ pelo\ seu\ pr\u00F3prio\r\n\ \r\n\ @param\ \ y\ \ \ exemplo\ de\ um\ par\u00E2metro\ de\ m\u00E9todo\r\n\ @return\ \ \ \ \ a\ soma\ de\ x\ com\ y\ \r\n
-numComments=2
+comment1.params=cod
+comment1.target=void\ insereCP(java.lang.String)
+comment2.params=cod
+comment2.target=boolean\ existeCP(java.lang.String)
+comment3.params=cod
+comment3.target=boolean\ existeCodPrd(java.lang.String)
+comment4.params=cod
+comment4.target=void\ removeCP(java.lang.String)
+numComments=5
