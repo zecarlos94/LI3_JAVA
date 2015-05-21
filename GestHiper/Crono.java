@@ -5,8 +5,6 @@ import java.util.*;
  * @author (seu nome) 
  * @version (número de versão ou data)
  */
-public class Cronos
-{
    /**long System.nanoTime()
  * Crono = mede um tempo entre start() e stop()
  * O tempo é medido em nanosegundos e convertido para 
@@ -37,5 +35,4 @@ public class Crono {
   public static String print() {
       return "" + stop();
   }
-}
 }
