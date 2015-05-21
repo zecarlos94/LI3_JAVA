@@ -9,7 +9,7 @@ public class ReadCSV {
 	BufferedReader br = null;
 	try {
 		String line;
-		br = new BufferedReader(new FileReader("/Users/zecarlos/LI3_JAVA/query11.csv"));
+		br = new BufferedReader(new FileReader("C:\\Users\\José Carlos\\Desktop\\query11.csv"));
 		while ((line = br.readLine()) != null) {
 		   System.out.println(line);
 		   StringTokenizer stringTokenizer = new StringTokenizer(line, ",");

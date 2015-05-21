@@ -13,7 +13,7 @@ public class CreateTXT {
  
     public static void main(String[] args) {
         try {
-            FileWriter writer = new FileWriter("/Users/zecarlos/LI3_JAVA/Test.txt", true);
+            FileWriter writer = new FileWriter("C:\\Users\\José Carlos\\Desktop\\Test.txt", true);
             BufferedWriter bufferedWriter = new BufferedWriter(writer);
  
             bufferedWriter.write("Olá");
