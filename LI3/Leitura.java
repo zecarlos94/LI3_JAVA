@@ -17,7 +17,7 @@ public class Leitura
         Scanner sc = new Scanner (System.in); 
         out.println("Insira o nome do ficheiro de clientes que pretende ler");
         ficheiro=sc.next();
-        br = new BufferedReader(new FileReader("/Users/zecarlos/LI3_JAVA/"+ficheiro+".txt"));
+        br = new BufferedReader(new FileReader(ficheiro+".txt"));
         while ((line = br.readLine()) != null) {
            System.out.println(line);
            StringTokenizer stringTokenizer = new StringTokenizer(line, "\n");
@@ -50,7 +50,7 @@ public class Leitura
         Scanner sc = new Scanner (System.in); 
         out.println("Insira o nome do ficheiro de produtos que pretende ler");
         ficheiro=sc.next();
-        br = new BufferedReader(new FileReader("/Users/zecarlos/LI3_JAVA/"+ficheiro+".txt"));
+        br = new BufferedReader(new FileReader(ficheiro+".txt"));
         while ((line = br.readLine()) != null) {
            System.out.println(line);
            StringTokenizer stringTokenizer = new StringTokenizer(line, "\n");
@@ -83,7 +83,7 @@ public class Leitura
         Scanner sc = new Scanner (System.in);
         out.println("Insira o nome do ficheiro de compras que pretende ler");
         ficheiro=sc.next();
-        br = new BufferedReader(new FileReader("/Users/zecarlos/LI3_JAVA/"+ficheiro+".txt"));
+        br = new BufferedReader(new FileReader(ficheiro+".txt"));
         while ((line = br.readLine()) != null) {
            System.out.println(line);
            StringTokenizer stringTokenizer = new StringTokenizer(line, " ");
