@@ -128,11 +128,15 @@ public class GestHiper
        Crono.start();
        System.out.printf("\nTotal de compras por mês: %d", h.comprasMes(opção));
        System.out.printf("\nFaturação total do mês: %.2f euros", h.getFactMes().get(opção-1));
+       System.out.printf("\nTotal de clientes que fizeram compras durante o mês: %d", h.clientesMes(opção));
        System.out.printf("\nTotal anual de compras inválidas: %d", h.getInvalidComp().size());
        Crono.stop();
        System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
-       System.out.printf("\n\nInsira o nome do ficheiro para guardar as compras inválidas: "); line=sc.next();
-       guardInvalidos(h, line);
+       System.out.printf("\n\nDeseja guardar as linhas de compras inválidas num ficheiro de texto?\n   (1) Sim\n   (2) Não\n"); opção=sc.nextInt();
+       if(opção==1) {
+           System.out.printf("\nInsira o nome do ficheiro para guardar as compras inválidas: "); line=sc.next();
+           guardInvalidos(h, line);
+       }
    }
    
    /**

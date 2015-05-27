@@ -1,6 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 import java.io.*;
 
@@ -282,7 +279,20 @@ public class Hipermercado implements Serializable
     * Devolve o número de compras efetuadas num dado mês
     */
    public int comprasMes(int mes) {
-       return this.compras.subMap(mes-1, mes).size();
+       return this.compras.subMap(mes, mes+1).size();
    }
-       
+   
+   /**
+    * Calcula o número total de clientes que efetuaram compras num dado mes
+    */
+   public int clientesMes(int mes) {
+       HashSet<String> aux=new HashSet<String>();
+       SortedMap<Integer, Compra> s=this.compras.subMap(mes, mes+1);
+       Iterator<Compra> it=s.values().iterator();
+       while(it.hasNext()) {
+           Compra c=it.next();
+           if(!aux.contains(c.getCodigoCliente())) aux.add(c.getCodigoCliente());
+       }
+       return aux.size();
+   }
 }
