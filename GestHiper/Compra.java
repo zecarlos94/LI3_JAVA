@@ -6,6 +6,9 @@ import java.io.*;
  */
 public class Compra implements Serializable
 {
+    /**
+     * Variáveis de instância
+     */
     private String codigo_produto;
     private double preco;
     private int quantidade_comprada;
@@ -13,6 +16,9 @@ public class Compra implements Serializable
     private String codigo_cliente;
     private int mes;
     
+    /**
+     * Construtores
+     */
     public Compra() {
         this.codigo_produto="N/A";
         this.preco=0;
@@ -40,30 +46,79 @@ public class Compra implements Serializable
         this.mes=c.getMes();
     }
     
-    public String getCodigoProduto() {return  this.codigo_produto;}
-    public double getPreco() {return this.preco;}
-    public int getQuantidadeComprada() {return this.quantidade_comprada;}
-    public String getModo() {return this.modo;}
-    public String getCodigoCliente() {return this.codigo_cliente;}
-    public int getMes() {return this.mes;}
+    /**
+     * Getters
+     */
+    public String getCodigoProduto() {
+        return  this.codigo_produto;
+    }
     
-    public void setCodigoProduto(String codigo_produto) {this.codigo_produto=codigo_produto;}
-    public void setPreco(double preco) {this.preco=preco;}
-    public void setQuantidadeComprada(int quantidade_comprada) {this.quantidade_comprada=quantidade_comprada;}
-    public void setModo(String modo) {this.modo=modo;}
-    public void setCodigoCliente(String codigo_cliente) {this.codigo_cliente=codigo_cliente;}
-    public void setMes(int mes) {this.mes=mes;}
+    public double getPreco() {
+        return this.preco;
+    }
     
+    public int getQuantidadeComprada() {
+        return this.quantidade_comprada;
+    }
+    
+    public String getModo() {
+        return this.modo;
+    }
+    
+    public String getCodigoCliente() {
+        return this.codigo_cliente;
+    }
+    
+    public int getMes() {
+        return this.mes;
+    }
+    
+    /**
+     * Setters
+     */
+    public void setCodigoProduto(String codigo_produto) {
+        this.codigo_produto=codigo_produto;
+    }
+    
+    public void setPreco(double preco) {
+        this.preco=preco;
+    }
+    
+    public void setQuantidadeComprada(int quantidade_comprada) {
+        this.quantidade_comprada=quantidade_comprada;
+    }
+    
+    public void setModo(String modo) {
+        this.modo=modo;
+    }
+    
+    public void setCodigoCliente(String codigo_cliente) {
+        this.codigo_cliente=codigo_cliente;
+    }
+    
+    public void setMes(int mes) {
+        this.mes=mes;
+    }
+    
+    /**
+     * Equals
+     */
     public boolean equals(Compra c) {
         if(this.codigo_produto.equals(c.getCodigoProduto()) && this.preco==c.getPreco() && this.quantidade_comprada==c.getQuantidadeComprada() &&
         this.modo.equals(c.getModo()) && this.codigo_cliente.equals(getCodigoCliente()) && this.mes==c.getMes()) return true;
         else return false;
     }
     
+    /**
+     * toString
+     */
     public String toString() {
         return new String(this.codigo_produto+this.preco+this.quantidade_comprada+this.modo+this.codigo_cliente+this.mes);
     }
     
+    /**
+     * Clone
+     */
     public Compra clone() {
         return new Compra(this);
     }
