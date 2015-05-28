@@ -7,52 +7,31 @@ import java.io.*;
 public class Hipermercado implements Serializable
 {
     /**
-     * Declaração de variáveis
+     * Variáveis de instância
      */
     private String compras_nome;
-    private String clientes_nome;
-    private String produtos_nome;
-    private HashSet<String> catalogo_clientes;
-    private HashSet<String> catalogo_produtos;
+    private CatalogoClientes catalogo_clientes;
+    private CatalogoProdutos catalogo_produtos;
     private TreeMap<Integer, Compra> compras; 
-    private HashSet<String> produtos_comprados;
-    private HashSet<String> clientes_compradores;
-    private ArrayList<String> invalidComp;
-    private ArrayList<Double> factMes;
-    private double faturacao_total;
-    private int compras_gratis;
+    private Contabilidade contabilidade;
     
     /**
      * Construtores
      */
     public Hipermercado() {
         this.compras_nome="N/A";
-        this.clientes_nome="N/A";
-        this.produtos_nome="N/A";
-        this.catalogo_clientes=new HashSet<String>();
-        this.catalogo_produtos=new HashSet<String>();
+        this.catalogo_clientes=new CatalogoClientes();
+        this.catalogo_produtos=new CatalogoProdutos();
         this.compras=new TreeMap<Integer, Compra>(new IntCompare()); 
-        this.produtos_comprados=new HashSet<String>();
-        this.clientes_compradores=new HashSet<String>();
-        this.invalidComp=new ArrayList<String>();
-        this.factMes=new ArrayList<Double>();
-        this.faturacao_total=0;
-        this.compras_gratis=0;
+        this.contabilidade=new Contabilidade();
     }
     
    public Hipermercado(Hipermercado h) {
         this.compras_nome=h.getComprasNome();
-        this.clientes_nome=h.getClientesNome();
-        this.produtos_nome=h.getProdutosNome();
         this.catalogo_clientes=h.getCatalogoClientes();
         this.catalogo_produtos=h.getCatalogoProdutos();
         this.compras=h.getCompras(); 
-        this.produtos_comprados=h.getProdutosComprados();
-        this.clientes_compradores=h.getClientesCompradores();
-        this.invalidComp=h.getInvalidComp();
-        this.factMes=h.getFactMes();
-        this.faturacao_total=h.getFaturacaoTotal();
-        this.compras_gratis=h.getComprasGratis();
+        this.contabilidade=h.getContabilidade();
    }
    
    /**
@@ -62,20 +41,12 @@ public class Hipermercado implements Serializable
        return this.compras_nome;
    }
    
-   public String getClientesNome() {
-       return this.clientes_nome;
+   public CatalogoClientes getCatalogoClientes() {
+       return this.catalogo_clientes.clone();
    }
    
-   public String getProdutosNome() {
-       return this.produtos_nome;
-   }
-   
-   public HashSet<String> getCatalogoClientes() {
-       return this.catalogo_clientes;
-   }
-   
-   public HashSet<String> getCatalogoProdutos() {
-       return this.catalogo_produtos;
+   public CatalogoProdutos getCatalogoProdutos() {
+       return this.catalogo_produtos.clone();
    }
    
    public TreeMap<Integer, Compra> getCompras() {
@@ -88,28 +59,8 @@ public class Hipermercado implements Serializable
        return aux;
    }
    
-   public HashSet<String> getProdutosComprados() {
-       return this.produtos_comprados;
-    }
-    
-   public HashSet<String> getClientesCompradores() {
-       return this.clientes_compradores;
-   }
-   
-   public ArrayList<String> getInvalidComp() {
-       return this.invalidComp;
-   }
-   
-   public ArrayList<Double> getFactMes() {
-       return this.factMes;
-   }
-   
-   public double getFaturacaoTotal() {
-       return this.faturacao_total;
-   }
-   
-   public int getComprasGratis() {
-       return this.compras_gratis;
+   public Contabilidade getContabilidade() {
+       return this.contabilidade.clone();
    }
    
    /**
@@ -119,20 +70,12 @@ public class Hipermercado implements Serializable
        this.compras_nome=compras_nome;
    }
    
-   public void setClientesNome(String clientes_nome) {
-       this.clientes_nome=clientes_nome;
+   public void setCatalogoClientes(CatalogoClientes catalogo_compras) {
+       this.catalogo_clientes=catalogo_clientes.clone();
    }
    
-   public void setProdutosNome(String produtos_nome) {
-       this.produtos_nome=produtos_nome;
-   }
-   
-   public void setCatalogoClientes(HashSet<String> catalogo_clientes) {
-       this.catalogo_clientes=catalogo_clientes;
-   }
-   
-   public void setCatalogoProdutos(HashSet<String> catalogo_produtos) {
-       this.catalogo_produtos=catalogo_produtos;
+   public void setCatalogoProdutos(CatalogoProdutos catalogo_produtos) {
+       this.catalogo_produtos=catalogo_produtos.clone();
    }
    
    public void setCompras(TreeMap<Integer, Compra> compras) {
@@ -145,28 +88,8 @@ public class Hipermercado implements Serializable
        this.compras=aux;
    }
    
-   public void setProdutosComprados(HashSet<String> produtos_comprados) {
-       this.produtos_comprados=produtos_comprados;
-   }
-   
-   public void setClientesCompradores(HashSet<String> clientes_compradores) {
-       this.clientes_compradores=clientes_compradores;
-   }
-   
-   public void setInvalidComp(ArrayList<String> invalidComp) {
-       this.invalidComp=invalidComp;
-   }
-   
-   public void setFactMes(ArrayList<Double> factMes) {
-       this.factMes=factMes;
-   }
-   
-   public void setFaturacaoTotal(double faturacao_total) {
-       this.faturacao_total=faturacao_total;
-   }
-   
-   public void setComprasGratis(int compras_gratis) {
-       this.compras_gratis=compras_gratis;
+   public void setContabilidade(Contabilidade contabilidade) {
+       this.contabilidade=contabilidade;
    }
    
    /**
@@ -198,12 +121,12 @@ public class Hipermercado implements Serializable
             }
         }
         if(type.equals("clientes")) {
-            this.clientes_nome=ficheiro;
-            this.catalogo_clientes=catalogo;
+            this.catalogo_clientes.setClientesNome(ficheiro);
+            this.catalogo_clientes.setCatalogoClientes(catalogo);
         }
         else {
-            this.produtos_nome=ficheiro;
-            this.catalogo_produtos=catalogo;
+            this.catalogo_produtos.setProdutosNome(ficheiro);
+            this.catalogo_produtos.setCatalogoProdutos(catalogo);
         }
    }
    
@@ -217,7 +140,7 @@ public class Hipermercado implements Serializable
         this.compras_nome=ficheiro;
         ArrayList<Double> aux=new ArrayList<Double>(12);
         for(int i=0; i<12; i++) aux.add(i, 0.0);
-        this.factMes=aux;
+        this.contabilidade.setFactMes(aux);
         try {
             String line;
             br=new BufferedReader(new FileReader(ficheiro));
@@ -229,18 +152,36 @@ public class Hipermercado implements Serializable
                 String modo=st.nextElement().toString();
                 String codigo_cliente=st.nextElement().toString();
                 Integer mes=Integer.parseInt(st.nextElement().toString());
-                    
-                if(existe(codigo_produto, "produtos") && existe(codigo_cliente, "clientes")) {
-                    this.faturacao_total+=preco*quantidade_comprada;
-                    if(preco==0) this.compras_gratis++;
-                    if(!this.produtos_comprados.contains(codigo_produto)) this.produtos_comprados.add(codigo_produto);
-                    if(!this.clientes_compradores.contains(codigo_cliente)) this.clientes_compradores.add(codigo_cliente);
-                    double fact=this.factMes.get(mes-1);
-                    this.factMes.set(mes-1, fact+(preco*quantidade_comprada));
+                Contabilidade cont=getContabilidade();
+                if(this.catalogo_produtos.existe(codigo_produto) && this.catalogo_clientes.existe(codigo_cliente)) {
+                    double contFact=cont.getFaturacaoTotal(); contFact+=preco*quantidade_comprada;
+                    this.contabilidade.setFaturacaoTotal(contFact);
+                    HashSet<String> clientes_compradores=this.catalogo_clientes.getClientesCompradores();
+                    HashSet<String> produtos_comprados=this.catalogo_produtos.getProdutosComprados();
+                    if(preco==0) {
+                        int compGratis=cont.getComprasGratis()+1;
+                        this.contabilidade.setComprasGratis(compGratis);
+                    }
+                    if(!produtos_comprados.contains(codigo_produto)) {
+                        produtos_comprados.add(codigo_produto);
+                        this.catalogo_produtos.setProdutosComprados(produtos_comprados);
+                    }
+                    if(!clientes_compradores.contains(codigo_cliente)) {
+                        clientes_compradores.add(codigo_cliente);
+                        this.catalogo_clientes.setClientesCompradores(clientes_compradores);
+                    }
+                    ArrayList<Double> f=cont.getFactMes();
+                    double fact=f.get(mes-1);
+                    f.set(mes-1, fact+(preco*quantidade_comprada));
+                    this.contabilidade.setFactMes(f);
                     Compra c=new Compra(codigo_produto, preco, quantidade_comprada, modo, codigo_cliente, mes);
                     this.compras.put(mes, c.clone());
                 }
-                else this.invalidComp.add(line);
+                else {
+                    ArrayList<String> s=cont.getInvalidComp();
+                    s.add(line);
+                    this.contabilidade.setInvalidComp(s);
+                }
             }
         } catch(IOException e) {
             e.printStackTrace();
@@ -251,28 +192,6 @@ public class Hipermercado implements Serializable
                 ex.printStackTrace();
             }
         }
-   }
-   
-   /**
-    * Verifica se um produto/cliente com um dado código existe no catálogo respetivo
-    */
-   public boolean existe(String code, String type) {
-       if(type.equals("produtos")) return this.catalogo_produtos.contains(code);
-       else return this.catalogo_clientes.contains(code);
-   }
-   
-   /**
-    * Calcula o total de produtos não comprados
-    */
-   public int totalProdutosNaoComprados() {
-       return this.catalogo_produtos.size()-this.produtos_comprados.size();
-   }
-   
-   /**
-    * Devolve o total de clientes não compradores
-    */
-   public int totalClientesNaoCompradores() {
-       return this.catalogo_clientes.size()-this.clientes_compradores.size();
    }
    
    /**
@@ -294,5 +213,29 @@ public class Hipermercado implements Serializable
            if(!aux.contains(c.getCodigoCliente())) aux.add(c.getCodigoCliente());
        }
        return aux.size();
+   }
+   
+   /**
+    * Devolve a lista ordenada de códigos de produto ou cliente inválidos
+    */
+   public TreeSet<String> devolveLista(String type) {
+       TreeSet<String> lista=new TreeSet<String>(new StringCompare());
+       if(type.equals("produtos")) {
+           CatalogoProdutos p=getCatalogoProdutos();
+           Iterator<String> it=p.getCatalogoProdutos().iterator();
+           while(it.hasNext()) {
+               String prod=it.next();
+               if(!p.getProdutosComprados().contains(prod)) lista.add(prod);
+           }
+       }
+       else {
+           CatalogoClientes c=getCatalogoClientes();
+           Iterator<String> it=c.getCatalogoClientes().iterator();
+           while(it.hasNext()) {
+               String clnt=it.next();
+               if(!c.getClientesCompradores().contains(clnt)) lista.add(clnt);
+           }
+       }
+       return lista;
    }
 }
