@@ -37,12 +37,15 @@ public class GestHiper
                     imprimeInvalidos(h, "clientes");
                     break;
                 case 6:
+                    compClntMes(h);
+                    break;
+                case 7:
                     break;
                 default:
                     System.out.printf("\nInsira uma opção válida!\n");
                     break;
             }
-        } while(opção!=6);
+        } while(opção!=7);
         System.out.printf("\n\nSaiu da aplicação! Adeus!");
     }
     
@@ -53,7 +56,8 @@ public class GestHiper
         System.out.printf("\n(3) Dados mensais");
         System.out.printf("\n(4) Lista ordenada com os códigos dos produtos nunca comprados e respectivo total");
         System.out.printf("\n(5) Lista ordenada com os códigos dos clientes que nunca compraram e respectivo total");
-        System.out.printf("\n(6) Sair");
+        System.out.printf("\n(6) Total de compras e clientes ativos num dado mês");
+        System.out.printf("\n(7) Sair");
         System.out.printf("\n\n-------------------------------------------------------------------------------------------------------------------------");
     }
     
@@ -183,6 +187,17 @@ public class GestHiper
        }
        navigation(aux);
        System.out.printf("\n\nTotal de %s inválidos: %d", type, lista.size());
+   }
+   
+   /**
+    * Devolve o número de clientes e de compras num mês
+    */
+   public static void compClntMes(Hipermercado h) {
+       Scanner sc=new Scanner(System.in);
+       int mes;
+       System.out.printf("\n\nInsira um mês: "); mes=sc.nextInt();
+       System.out.printf("\nTotal de compras: %d", h.comprasMes(mes));
+       System.out.printf("\nTotal de clientes: %d", h.clientesMes(mes));
    }
    
    /**
