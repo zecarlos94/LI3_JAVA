@@ -40,12 +40,15 @@ public class GestHiper
                     compClntMes(h);
                     break;
                 case 7:
+                    clntInfoMensal(h);
+                    break;
+                case 8:
                     break;
                 default:
                     System.out.printf("\nInsira uma opção válida!\n");
                     break;
             }
-        } while(opção!=7);
+        } while(opção!=8);
         System.out.printf("\n\nSaiu da aplicação! Adeus!");
     }
     
@@ -57,7 +60,8 @@ public class GestHiper
         System.out.printf("\n(4) Lista ordenada com os códigos dos produtos nunca comprados e respectivo total");
         System.out.printf("\n(5) Lista ordenada com os códigos dos clientes que nunca compraram e respectivo total");
         System.out.printf("\n(6) Total de compras e clientes ativos num dado mês");
-        System.out.printf("\n(7) Sair");
+        System.out.printf("\n(7) Informação mensal de um cliente");
+        System.out.printf("\n(8) Sair");
         System.out.printf("\n\n-------------------------------------------------------------------------------------------------------------------------");
     }
     
@@ -82,7 +86,7 @@ public class GestHiper
     }
     
    /**
-    * Grava o estado atual do programa num ficheiro binário
+    * Grava o estado atual do programa num ficheiro binário (Opção 1)
     */
    public static void guardaBinario(Hipermercado h, String filename) throws IOException {
         System.out.printf("\nA guardar estado...");
@@ -110,7 +114,7 @@ public class GestHiper
    }
    
    /**
-    * Informações do hipermercado
+    * Informações do hipermercado (Opção 2)
     */
    public static void info(Hipermercado h) {
        Crono.start();
@@ -133,7 +137,7 @@ public class GestHiper
    }
    
    /**
-    * Dados mensais do hipermercado
+    * Dados mensais do hipermercado (Opção 3)
     */
    public static void mensalData(Hipermercado h) {
        Scanner sc=new Scanner(System.in);
@@ -175,7 +179,7 @@ public class GestHiper
    }
    
    /**
-    * Imprime no ecrã a lista dos produtos ou clientes inválidos
+    * Imprime no ecrã a lista dos produtos ou clientes inválidos (Opções 4 e 5)
     */
    public static void imprimeInvalidos(Hipermercado h, String type) {
        TreeSet<String> lista=h.devolveLista(type);
@@ -190,14 +194,34 @@ public class GestHiper
    }
    
    /**
-    * Devolve o número de clientes e de compras num mês
+    * Devolve o número de clientes e de compras num mês (Opção 6)
     */
    public static void compClntMes(Hipermercado h) {
        Scanner sc=new Scanner(System.in);
        int mes;
        System.out.printf("\n\nInsira um mês: "); mes=sc.nextInt();
+       Crono.start();
        System.out.printf("\nTotal de compras: %d", h.comprasMes(mes));
        System.out.printf("\nTotal de clientes: %d", h.clientesMes(mes));
+       Crono.stop();
+       System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
+   }
+   
+   /**
+    * Imprime a informação mensal de um cliente (Opção 7)
+    */
+   public static void clntInfoMensal(Hipermercado h) {
+       Scanner sc=new Scanner(System.in);
+       String cliente;
+       System.out.printf("\n\nInsira o código do cliente: "); cliente=sc.next();
+       Crono.start();
+       for(int i=0; i<12; i++) {
+           System.out.printf("\nMês %d: ", i+1);
+           System.out.printf("\n   Total de compras efetuadas: %d | Total de produtos comprados: %d | Gasto mensal: %.2f euros", h.comprasClntMes(cliente, i), h.clientesProdMes(cliente, i), h.gastosClnt(cliente, i));
+       }
+       System.out.printf("\n\nTotal gasto durante o ano: %.2f", h.gastoAnualClnt(cliente));
+       Crono.stop();
+       System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
    }
    
    /**
