@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.params=
+comment0.target=void\ start()
+comment0.text=inicia\ a\ contagem\ de\ tempo
+comment1.params=
+comment1.target=double\ stop()
+comment1.text=termina\ a\ contagem\ de\ tempo\ \ e\ devolve\ diferen\u00E7a\ em\ segs
+comment2.params=
+comment2.target=java.lang.String\ print()
+comment2.text=converte\ a\ diferen\u00E7a\ numa\ string
+numComments=3
