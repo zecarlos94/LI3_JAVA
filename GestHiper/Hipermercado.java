@@ -211,6 +211,13 @@ public class Hipermercado implements Serializable
                     /**compras*/
                     Compra c=new Compra(codigo_produto, preco, quantidade_comprada, modo, codigo_cliente, mes);
                     this.compras.put(mes, c.clone());
+                    String cProduto = c.getCodigoProduto();
+                    if(compras2.containsKey(cProduto))  this.compras2.get(c.getCodigoProduto()).add(c);
+                        else {
+                            InfoProduto info = new InfoProduto(c);
+                            this.compras2.put(cProduto,info);
+                        }
+                  
                     
                     /**compras_mes*/
                     if(!compClntMes.containsKey(codigo_cliente)) {
@@ -351,5 +358,22 @@ public class Hipermercado implements Serializable
              
             }
         return result;
+    }
+    
+    /**
+     *  Auxiliar da query 10 devolve
+     */
+    
+    public TreeSet<ClienteDespesa> query10Aux(String produto)
+    {
+            TreeSet<ClienteDespesa> result = new TreeSet<ClienteDespesa>(new ClienteDespesaClienteCompara());
+            TreeSet<ClienteDespesa> despesas = compras2.get(produto).getDespesas();
+            Iterator<ClienteDespesa> it = despesas.iterator();
+            while(it.hasNext())
+            {
+                ClienteDespesa elem = it.next();
+                result.add(elem);
+            }
+            return result;
     }
 }

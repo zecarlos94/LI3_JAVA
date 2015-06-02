@@ -15,12 +15,12 @@ public class InfoProduto
     
     private TreeSet<ClienteDespesa>  despesas; //Ordenado por quantidade de produtos comprados
     
-    public InfoProduto()
+    public InfoProduto(Compra compra)
     {
         informacaoMensal = new ArrayList<InfoProdutoMes>(12);
         unidadesVendidas = 0;
         despesas = new TreeSet<ClienteDespesa>(new ClienteDespesaQuantidadeCompara());
-        
+        this.add(compra);
         
     }
 
@@ -46,6 +46,7 @@ public class InfoProduto
     /**
      *  Warning nesta função !!!
      */
+
     public int getClientesUnicos()
     {
         int i;
@@ -56,9 +57,11 @@ public class InfoProduto
         }
         return clientes.size();
     }
-    
+  
     public int getUnidadesVendidas(){   return this.unidadesVendidas;}
-   
+    
+   // Isto funciona ??? talvez
+    public TreeSet<ClienteDespesa> getDespesas(){   return new TreeSet<ClienteDespesa>(this.despesas);   }
     
     public ArrayList<InfoProdutoMes> getInformacaoMensal(){
             ArrayList<InfoProdutoMes> clone = new ArrayList<InfoProdutoMes>(this.informacaoMensal);

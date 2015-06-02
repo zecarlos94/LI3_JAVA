@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=
-comment0.target=InfoProduto()
+comment0.params=compra
+comment0.target=InfoProduto(Compra)
 comment1.params=compra
 comment1.target=void\ add(Compra)
 comment2.params=
@@ -9,5 +9,7 @@ comment2.text=\n\ \ Warning\ nesta\ fun\u00E7\u00E3o\ \!\!\!\n
 comment3.params=
 comment3.target=int\ getUnidadesVendidas()
 comment4.params=
-comment4.target=java.util.ArrayList\ getInformacaoMensal()
-numComments=5
+comment4.target=java.util.TreeSet\ getDespesas()
+comment5.params=
+comment5.target=java.util.ArrayList\ getInformacaoMensal()
+numComments=6
