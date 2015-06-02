@@ -15,6 +15,7 @@ public class Hipermercado implements Serializable
     private TreeMap<Integer, Compra> compras; 
     private Contabilidade contabilidade;
     private ArrayList<ComprasMes> compras_mes;
+    private HashMap<String,InfoProduto> compras2;
     
     /**
      * Construtores
@@ -322,4 +323,33 @@ public class Hipermercado implements Serializable
        for(int i=0; i<12; i++) gastos+=gastosClnt(cliente, i);
        return gastos;
    }
+   
+    /**
+     *  Devolve informaçao mensal de cada produto
+     */
+   
+    public ArrayList<InfoProdutoMes> getInformacaoMensalProduto(String produto)
+    {
+            return compras2.get(produto).getInformacaoMensal();
+    }
+    /**
+     *  Auxiliarr da query 8 devolve
+     */
+    
+    public TreeMap<Integer,ParProdutoNClientes> query8Aux()
+    {
+        TreeMap<Integer,ParProdutoNClientes> result = new TreeMap<Integer,ParProdutoNClientes>( new IntDecrescenteCompare()); // mudar comparador decrescente
+        Iterator<Map.Entry<String,InfoProduto>> it = compras2.entrySet().iterator();
+        while(it.hasNext()){
+             String produto = it.next().getKey();
+             InfoProduto info = it.next().getValue();
+             
+             int clientesUnicos = info.getClientesUnicos();
+             int unidades = info.getUnidadesVendidas();
+             ParProdutoNClientes par = new ParProdutoNClientes(produto,clientesUnicos);
+             result.put(unidades,par);
+             
+            }
+        return result;
+    }
 }

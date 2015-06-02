@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.params=produto\ clientes
+comment0.target=ParProdutoNClientes(java.lang.String,\ int)
+comment0.text=\n\ Constructor\ for\ objects\ of\ class\ ParProdutoNClientes\n
+comment1.params=
+comment1.target=java.lang.String\ getProduto()
+comment2.params=
+comment2.target=int\ getNClientes()
+numComments=3

@@ -241,4 +241,41 @@ public class GestHiper
            if(opção<0 || opção>intervalo+1) System.out.printf("\n\nInsira um valor correto!");
        } while(opção!=0);
    }
+   
+   /**
+    *   Query 5
+    */
+   
+   public static void query5(String produto,Hipermercado h){
+        ArrayList<InfoProdutoMes> info = h.getInformacaoMensalProduto(produto);
+        int i = 0;
+        
+        System.out.println("Informaçao mensal do produto" + produto);
+        for(i=0; i < 12; i++)
+        {
+            InfoProdutoMes infoM = info.get(i);
+            System.out.println("Mes " + i);
+            System.out.printf("Número de compras: %d\nNúmero de clientes distintos:%d\nTotal facturado:%.2f\n",(infoM.getComprasP() + infoM.getComprasN()),infoM.numeroClientesDistintos(),(infoM.getFactP()+infoM.getFactN()));
+            
+            
+        }
+    }
+    
+    public static void query6(String produto,Hipermercado h){
+         ArrayList<InfoProdutoMes> info = h.getInformacaoMensalProduto(produto);
+        int i = 0;
+        
+        System.out.println("Informaçao mensal do produto" + produto);
+        for(i=0; i < 12; i++)
+        {
+            InfoProdutoMes infoM = info.get(i);
+            System.out.println("Mes " + i);
+            System.out.printf("Número de compras sem promoção %d com o total facturado %.2f\n",infoM.getComprasN(),infoM.getFactN());
+            System.out.printf("Número de compras em promoção %d com o total facturado %.2f\n",infoM.getComprasP(),infoM.getFactP());
+        }
+    }
+   
+    
+    
+
 }
