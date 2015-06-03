@@ -21,7 +21,7 @@ public class ComprasMes implements Serializable
         this.total_compras=0;
         this.compras_cliente=new HashMap<String, Integer>();
         this.gastos_cliente=new HashMap<String, Double>();
-        this.cliente_produto=new TreeMap<String, String>();
+        this.cliente_produto=new TreeMap<String, String>(new StringCompare());
     }
     
     public ComprasMes(ComprasMes cm) {
