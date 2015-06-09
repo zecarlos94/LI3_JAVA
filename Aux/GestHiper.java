@@ -260,8 +260,8 @@ public class GestHiper
        for(int i=0; i < 12; i++) {
             InfoProdutoMes infoM = info.get(i);
             System.out.printf("\nMês %d: ", i+1);
-            System.out.printf("\n   Número de compras em modo N: %d | Total faturado: %.2f", infoM.getComprasN(), infoM.getFactN());
-            System.out.printf(" | Número de compras em modo P: %d  | Total faturado: %.2f", infoM.getComprasP(), infoM.getFactP());
+            System.out.printf("\n   Número de compras em modo N: %d, com faturação de %.2f euros", infoM.getComprasN(), infoM.getFactN());
+            System.out.printf(" | Número de compras em modo P: %d, com faturação de %.2f", infoM.getComprasP(), infoM.getFactP());
        }
        Crono.stop();
        System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
