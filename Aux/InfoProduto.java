@@ -1,75 +1,40 @@
 import java.util.*;
+import java.io.*;
 
-/**
- * Informação de um produto
- */
-public class InfoProduto
+public class InfoProduto implements Serializable
 {
-    private ArrayList<InfoProdutoMes> informacaoMensal;
-    private int unidadesVendidas;
-    private TreeSet<ClienteDespesa> despesas; //Ordenado por quantidade de produtos comprados
+    private String codigo;
+    private int quantidade;
     
     public InfoProduto() {
-        this.informacaoMensal=new ArrayList<InfoProdutoMes>(12);
-        for(int i=0; i<12; i++) {
-            InfoProdutoMes p=new InfoProdutoMes();
-            this.informacaoMensal.add(i, p);
-        }
-        this.unidadesVendidas=0;
-        this.despesas=new TreeSet<ClienteDespesa>(new ClienteDespesaQuantidadeCompara());
+        this.codigo="N/A";
+        this.quantidade=0;
     }
     
     public InfoProduto(InfoProduto p) {
-        this.informacaoMensal=p.getInformacaoMensal();
-        this.unidadesVendidas=p.getUnidadesVendidas();
-        this.despesas=p.getDespesas();
-    }
-
-    public void add(String codigo_produto, double preco, int quantidade_comprada, String modo, String codigo_cliente, int mes) {
-        boolean encontrou=false;
-        this.informacaoMensal.get(mes-1).add(codigo_produto, preco, quantidade_comprada, modo, codigo_cliente);
-        this.unidadesVendidas+=quantidade_comprada;
-        Iterator<ClienteDespesa> it=this.despesas.iterator();
-        while(it.hasNext() && !encontrou) {
-             ClienteDespesa elem=it.next();
-             if(elem.getCliente().equals(codigo_cliente)) { 
-                 elem.add(preco, quantidade_comprada); encontrou=true; 
-             }
-        }
-        if(!encontrou) {
-            ClienteDespesa novo=new ClienteDespesa(codigo_cliente, preco*quantidade_comprada, quantidade_comprada);
-            this.despesas.add(novo.clone());
-        }
+        this.codigo=p.getCodigo();
+        this.quantidade=p.getQuantidade();
     }
     
-    public int getClientesUnicos() {
-        TreeSet<String> clientes=new TreeSet<String>(new StringCompare());
-        for(int i=0; i<12; i++){
-            TreeSet<String> clientesMensais=this.informacaoMensal.get(i).getClientes();
-            if(clientesMensais.size()>0) clientes.addAll(clientesMensais);
-        }
-        return clientes.size();
-    }
-  
-    public int getUnidadesVendidas() {return this.unidadesVendidas;}
-    
-    public TreeSet<ClienteDespesa> getDespesas() {
-        TreeSet<ClienteDespesa> aux=new TreeSet<ClienteDespesa>(new ClienteDespesaQuantidadeCompara());
-        Iterator<ClienteDespesa> it=this.despesas.iterator();
-        while(it.hasNext()) {
-            ClienteDespesa c=it.next().clone();
-            aux.add(c);
-        }
-        return aux;
+    public InfoProduto(String codigo, int quantidade) {
+        this.codigo=codigo;
+        this.quantidade=quantidade;
     }
     
-    public ArrayList<InfoProdutoMes> getInformacaoMensal() {
-        ArrayList<InfoProdutoMes> aux=new ArrayList<InfoProdutoMes>();
-        for(int i=0; i<12; i++) {
-            InfoProdutoMes p=this.informacaoMensal.get(i).clone();
-            aux.add(i, p);
-        }
-        return aux;
+    public String getCodigo() {
+        return this.codigo;
+    }
+    
+    public int getQuantidade() {
+        return this.quantidade;
+    }
+    
+    public void setCodigo(String codigo) {
+        this.codigo=codigo;
+    }
+    
+    public void setQuantidade(int quantidade) {
+        this.quantidade=quantidade;
     }
     
     public InfoProduto clone() {

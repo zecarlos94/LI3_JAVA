@@ -15,7 +15,7 @@ public class Hipermercado implements Serializable
     private Contabilidade contabilidade;
     private ArrayList<ClientesMes> clientes_mes;
     private ArrayList<ProdutosMes> produtos_mes;
-    private HashMap<String, InfoProduto> compras; 
+    private HashMap<String, TreeSet<InfoProduto>> produtosPorCliente;
     
     /**
      * Construtores
@@ -31,7 +31,7 @@ public class Hipermercado implements Serializable
             this.clientes_mes.add(i, new ClientesMes());
             this.produtos_mes.add(i, new ProdutosMes());
         }
-        this.compras=new HashMap<String, InfoProduto>();
+        this.produtosPorCliente=new HashMap<String, TreeSet<InfoProduto>>();
     }
     
    public Hipermercado(Hipermercado h) {
@@ -41,7 +41,7 @@ public class Hipermercado implements Serializable
         this.contabilidade=h.getContabilidade();
         this.clientes_mes=h.getClientesMes();
         this.produtos_mes=h.getProdutosMes();
-        this.compras=h.getCompras();
+        this.produtosPorCliente=h.getProdutosPorCliente();
    }
    
    /**
@@ -75,14 +75,20 @@ public class Hipermercado implements Serializable
        return aux;
    }
    
-   public HashMap<String, InfoProduto> getCompras() {
-       HashMap<String, InfoProduto> aux=new HashMap<String, InfoProduto>();
-       Iterator<Map.Entry<String, InfoProduto>> it=this.compras.entrySet().iterator();
-       while(it.hasNext()) {
-           Map.Entry<String, InfoProduto> elem=it.next();
-           aux.put(elem.getKey(), elem.getValue().clone());
+   public HashMap<String, TreeSet<InfoProduto>> getProdutosPorCliente() {
+       HashMap<String, TreeSet<InfoProduto>> aux1=new HashMap<String, TreeSet<InfoProduto>>();
+       Iterator<Map.Entry<String, TreeSet<InfoProduto>>> it1=this.produtosPorCliente.entrySet().iterator();
+       while(it1.hasNext()) {
+           Map.Entry<String, TreeSet<InfoProduto>> elem=it1.next();
+           TreeSet<InfoProduto> aux2=new TreeSet<InfoProduto>(new QtdComparator());
+           Iterator<InfoProduto> it2=elem.getValue().iterator();
+           while(it2.hasNext()) {
+               InfoProduto p=it2.next().clone();
+               aux2.add(p);
+           }
+           aux1.put(elem.getKey(), aux2);
        }
-       return aux;
+       return aux1;
    }
    
    /**
@@ -114,16 +120,6 @@ public class Hipermercado implements Serializable
        ArrayList<ProdutosMes> aux=new ArrayList<ProdutosMes>(12);
        for(ProdutosMes cm: produtos_mes) aux.add(cm.clone());
        this.produtos_mes=aux;
-   }
-   
-   public void setCompras(HashMap<String, InfoProduto> compras) {
-       HashMap<String, InfoProduto> aux=new HashMap<String, InfoProduto>();
-       Iterator<Map.Entry<String, InfoProduto>> it=compras.entrySet().iterator();
-       while(it.hasNext()) {
-           Map.Entry<String, InfoProduto> elem=it.next();
-           aux.put(elem.getKey(), elem.getValue().clone());
-       }
-       this.compras=aux;
    }
    
    /**
@@ -189,17 +185,24 @@ public class Hipermercado implements Serializable
                 if(this.catalogo_produtos.existe(codigo_produto) && this.catalogo_clientes.existe(codigo_cliente)) {
                     ClientesMes clnt=this.getClientesMes().get(mes-1);
                     ProdutosMes prod=this.getProdutosMes().get(mes-1);
-                    CatalogoClientes cc=this.getCatalogoClientes(); CatalogoProdutos cp=this.getCatalogoProdutos();
+                    CatalogoClientes cc=this.getCatalogoClientes(); CatalogoProdutos cp=this.getCatalogoProdutos(); 
                     cc.guardaCliente(codigo_cliente); this.setCatalogoClientes(cc); // catalogo_clientes
                     cp.guardaProduto(codigo_produto); this.setCatalogoProdutos(cp); // catalogo_produtos
                     cont.leitura(preco, quantidade_comprada, mes); this.setContabilidade(cont); // contabilidade
                     clnt.leitura(codigo_cliente, codigo_produto, preco, quantidade_comprada); this.clientes_mes.set(mes-1, clnt.clone()); // clientes_mes
-                    prod.leitura(codigo_cliente, codigo_produto, preco, quantidade_comprada); this.produtos_mes.set(mes-1, prod.clone()); // produtos_mes
-                    // compras
-                    if(this.compras.containsKey(codigo_produto)) this.compras.get(codigo_produto).add(codigo_produto, preco, quantidade_comprada, modo, codigo_cliente, mes);
+                    prod.leitura(codigo_cliente, codigo_produto, preco, quantidade_comprada, modo); this.produtos_mes.set(mes-1, prod.clone()); // produtos_mes
+                    
+                    if(!this.produtosPorCliente.containsKey(codigo_cliente)) { //produtosPorCliente
+                        TreeSet<InfoProduto> aux=new TreeSet<InfoProduto>(new QtdComparator());
+                        InfoProduto novo=new InfoProduto(codigo_produto, quantidade_comprada);
+                        aux.add(novo.clone());
+                        this.produtosPorCliente.put(codigo_cliente, aux);
+                    }
                     else {
-                        InfoProduto info=new InfoProduto(); info.add(codigo_produto, preco, quantidade_comprada, modo, codigo_cliente, mes);
-                        this.compras.put(codigo_produto ,info);
+                        TreeSet<InfoProduto> arv=this.produtosPorCliente.get(codigo_cliente);
+                        InfoProduto p=new InfoProduto(codigo_produto, quantidade_comprada);
+                        arv.add(p.clone());
+                        this.produtosPorCliente.put(codigo_cliente, arv);
                     }
                 }
                 else {
@@ -223,7 +226,7 @@ public class Hipermercado implements Serializable
     * Devolve o número de compras efetuadas num dado mês
     */
    public int comprasMes(int mes) {
-       return this.contabilidade.getTotalCompMes().get(mes);
+       return this.contabilidade.getTotalCompMes().get(mes-1);
    }
    
    /**
@@ -266,6 +269,9 @@ public class Hipermercado implements Serializable
        else return 0;
    }
    
+   /**
+    * Devolve o número de clientes que compraram o produto num mês
+    */
    public int comprasProdMes(String produto, int mes) {
        ProdutosMes prod=getProdutosMes().get(mes);
        if(prod.getComprasProduto().containsKey(produto)) return prod.getComprasProduto().get(produto);
@@ -315,10 +321,36 @@ public class Hipermercado implements Serializable
        return gastos;
    }
    
-    /**
-     *  Devolve informaçao mensal de cada produto
-     */
-    public ArrayList<InfoProdutoMes> getInformacaoMensalProduto(String produto) {
-        return this.compras.get(produto).clone().getInformacaoMensal();
-    }
+   /**
+    * Retorna um array em que a primeira posição corresponde ao número de compras e modo N e a segunda em modo P
+    */
+   public ArrayList<Integer> prodComprasModo(String produto, int mes) {
+       ArrayList<Integer> aux=new ArrayList<Integer>(2);
+       ProdutosMes prod=getProdutosMes().get(mes);
+       aux.add(0, prod.comprasModoN(produto)); aux.add(1, prod.comprasModoP(produto));
+       return aux;
+   }
+   
+   /**
+    * Retorna um array em que a primeira posição corresponde à faturação em modo N e a segunda em modo P
+    */
+   public ArrayList<Double> prodFactModo(String produto, int mes) {
+       ArrayList<Double> aux=new ArrayList<Double>(2);
+       ProdutosMes prod=getProdutosMes().get(mes);
+       aux.add(0, prod.factModoN(produto)); aux.add(1, prod.factModoP(produto));
+       return aux;
+   }
+   
+   /**
+    * Retorna o TreeSet de produtos comprados por cliente, ordenado por ordem decrescente de quantidade
+    */
+   public TreeSet<InfoProduto> prodCliente(String cliente) {
+       TreeSet<InfoProduto> novo=new TreeSet<InfoProduto>(new QtdComparator());
+       Iterator<InfoProduto> it=this.produtosPorCliente.get(cliente).iterator();
+       while(it.hasNext()) {
+           InfoProduto p=it.next().clone();
+           novo.add(p);
+       }
+       return novo;
+   }
 }

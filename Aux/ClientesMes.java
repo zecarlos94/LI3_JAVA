@@ -11,7 +11,7 @@ public class ClientesMes implements Serializable
      */
     private HashMap<String, Integer> compras_cliente;
     private HashMap<String, Double> gastos_cliente;
-    private TreeMap<String, String> cliente_produto;
+    private TreeMap<String, ArrayList<String>> cliente_produto;
     
     /**
      * Construtores
@@ -19,7 +19,7 @@ public class ClientesMes implements Serializable
     public ClientesMes() {
         this.compras_cliente=new HashMap<String, Integer>();
         this.gastos_cliente=new HashMap<String, Double>();
-        this.cliente_produto=new TreeMap<String, String>(new StringCompare());
+        this.cliente_produto=new TreeMap<String, ArrayList<String>>(new StringCompare());
     }
     
     public ClientesMes(ClientesMes cm) {
@@ -39,7 +39,7 @@ public class ClientesMes implements Serializable
         return this.gastos_cliente;
     }
     
-    public TreeMap<String, String> getClienteProduto() {
+    public TreeMap<String, ArrayList<String>> getClienteProduto() {
         return this.cliente_produto;
     }
     
@@ -54,7 +54,7 @@ public class ClientesMes implements Serializable
         this.gastos_cliente=gastos_cliente;
     }
     
-    public void setClienteProduto(TreeMap<String, String> cliente_produto) {
+    public void setClienteProduto(TreeMap<String, ArrayList<String>> cliente_produto) {
         this.cliente_produto=cliente_produto;
     }
     
@@ -69,33 +69,46 @@ public class ClientesMes implements Serializable
     * Devolve o número de produtos distintos comprados por um cliente num dado mês
     */
     public int clientesProdMes(String cliente) {
-       int total=0;
-       HashSet<String> prod=new HashSet<String>();
-       Iterator<Map.Entry<String, String>> it=this.cliente_produto.entrySet().iterator();
-       while(it.hasNext()) {
-           Map.Entry<String, String> elem=it.next();
-           if(elem.getKey().equals(cliente) && !prod.contains(elem.getValue())) {
-               total++;
-               prod.add(elem.getValue());
-           }
-       }
-       return total;
+        ArrayList<String> clnt=new ArrayList<String>();
+        Iterator<Map.Entry<String, ArrayList<String>>> it=this.cliente_produto.entrySet().iterator();
+        while(it.hasNext()) {
+            Map.Entry<String, ArrayList<String>> elem=it.next();
+            if(elem.getKey().equals(cliente)) {
+                ArrayList<String> list=elem.getValue();
+                for(String s: list) {
+                    if(!clnt.contains(s)) clnt.add(s);
+                }
+            }
+        }
+        return clnt.size();
     }
     
     /**
      * Faz a leitura dos ficheiros e atualiza a classe classe
      */
     public void leitura(String codigo_cliente, String codigo_produto, double preco, int quantidade_comprada) {
-         if(!this.compras_cliente.containsKey(codigo_cliente)) {
-             this.compras_cliente.put(codigo_cliente, 1);
-             this.gastos_cliente.put(codigo_cliente, quantidade_comprada*preco);
+         if(!this.cliente_produto.containsKey(codigo_cliente)) {
+             ArrayList<String> list=new ArrayList<String>();
+             list.add(codigo_produto);
+             this.cliente_produto.put(codigo_cliente, list);
          }
          else {
-             int numCompras=this.compras_cliente.get(codigo_cliente)+1;
-             double factClnt=this.gastos_cliente.get(codigo_cliente)+(quantidade_comprada*preco);
-             this.compras_cliente.remove(codigo_cliente); this.compras_cliente.put(codigo_cliente, numCompras);
-             this.gastos_cliente.remove(codigo_cliente); this.gastos_cliente.put(codigo_cliente, factClnt);        
+             ArrayList<String> lista=this.cliente_produto.get(codigo_cliente);
+             lista.add(codigo_produto);
+             this.cliente_produto.remove(codigo_cliente);
+             this.cliente_produto.put(codigo_cliente, lista);
          }
-         this.cliente_produto.put(codigo_cliente, codigo_produto); 
+         if(!this.compras_cliente.containsKey(codigo_cliente)) this.compras_cliente.put(codigo_cliente, 1);
+         else {
+             int numCompras=this.compras_cliente.get(codigo_cliente)+1;
+             this.compras_cliente.remove(codigo_cliente); 
+             this.compras_cliente.put(codigo_cliente, numCompras);
+         }
+         if(!this.gastos_cliente.containsKey(codigo_cliente)) this.gastos_cliente.put(codigo_cliente, quantidade_comprada*preco);
+         else {
+             double gastos=this.gastos_cliente.get(codigo_cliente)+(quantidade_comprada*preco);
+             this.gastos_cliente.remove(codigo_cliente); 
+             this.gastos_cliente.put(codigo_cliente, gastos);  
+         }
     }
 }

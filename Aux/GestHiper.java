@@ -46,15 +46,18 @@ public class GestHiper
                     prodInfoMensal(h);
                     break;
                 case 9:
-                    query6(h);
+                    prodComprasModo(h);
                     break;
                 case 10:
+                    produtosMaisComprados(h);
+                    break;
+                case 11:
                     break;
                 default:
                     System.out.printf("\nInsira uma opção válida!\n");
                     break;
             }
-        } while(opção!=10);
+        } while(opção!=11);
         System.out.printf("\n\nSaiu da aplicação! Adeus!");
     }
     
@@ -68,8 +71,9 @@ public class GestHiper
         System.out.printf("\n(6) Total de compras e clientes ativos num dado mês");
         System.out.printf("\n(7) Informação mensal de um cliente");
         System.out.printf("\n(8) Informação mensal de um produto");
-        System.out.printf("\n(9) Total de produtos vendidos, em modo N e modo P, e respetivas faturações");
-        System.out.printf("\n(10) Sair");
+        System.out.printf("\n(9) Número de compras de um produto, mês a mês, em modo N e em modo P");
+        System.out.printf("\n(10) Produtos mais comprados por cliente");
+        System.out.printf("\n(11) Sair");
         System.out.printf("\n\n-------------------------------------------------------------------------------------------------------------------------");
     }
     
@@ -187,7 +191,7 @@ public class GestHiper
    }
    
    /**
-    * Imprime no ecrã a lista dos produtos ou clientes inválidos (Queries 1 e 2)
+    * Imprime no ecrã a lista dos produtos ou clientes inválidos (Opções 4 e 5 - Queries 1 e 2)
     */
    public static void imprimeInvalidos(Hipermercado h, String type) {
        TreeSet<String> lista=h.devolveLista(type);
@@ -202,21 +206,21 @@ public class GestHiper
    }
    
    /**
-    * Devolve o número de clientes e de compras num mês (Query 3)
+    * Devolve o número de clientes e de compras num mês (Opção 6 - Query 3)
     */
    public static void compClntMes(Hipermercado h) {
        Scanner sc=new Scanner(System.in);
        int mes;
        System.out.printf("\n\nInsira um mês: "); mes=sc.nextInt();
        Crono.start();
-       System.out.printf("\nTotal de compras: %d", h.comprasMes(mes-1));
-       System.out.printf("\nTotal de clientes: %d", h.clientesMes(mes-1));
+       System.out.printf("\nTotal de compras: %d", h.comprasMes(mes));
+       System.out.printf("\nTotal de clientes: %d", h.clientesMes(mes));
        Crono.stop();
        System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
    }
    
    /**
-    * Imprime a informação mensal de um cliente (Query 4)
+    * Imprime a informação mensal de um cliente (Opção 7 - Query 4)
     */
    public static void clntInfoMensal(Hipermercado h) {
        Scanner sc=new Scanner(System.in);
@@ -227,13 +231,13 @@ public class GestHiper
            System.out.printf("\nMês %d: ", i+1);
            System.out.printf("\n   Total de compras efetuadas: %d | Total de produtos comprados: %d | Gasto mensal: %.2f euros", h.comprasClntMes(cliente, i), h.clientesProdMes(cliente, i), h.gastosClnt(cliente, i));
        }
-       System.out.printf("\n\nTotal gasto durante o ano: %.2f", h.gastoAnualClnt(cliente));
+       System.out.printf("\n\nTotal gasto durante o ano: %.2f euros", h.gastoAnualClnt(cliente));
        Crono.stop();
        System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
    }
    
    /**
-    * Imprime a informação mensal de um produto (Query 5)
+    * Imprime a informação mensal de um produto (Opção 8 - Query 5)
     */
    public static void prodInfoMensal(Hipermercado h) {
        Scanner sc=new Scanner(System.in);
@@ -249,22 +253,42 @@ public class GestHiper
    }
    
    /**
-    * Imprime o total de produtos comprados em modo N e modo P e as respetivas faturações (Query 6)
+    * Número de compras de um produto, mês a mês, em modo N e em modo P (Opção 9 - Query 6)
     */
-   public static void query6(Hipermercado h) {
+   public static void prodComprasModo(Hipermercado h) {
        Scanner sc=new Scanner(System.in);
        String produto;
        System.out.printf("\n\nInsira o código do produto: "); produto=sc.next();
        Crono.start();
-       ArrayList<InfoProdutoMes> info = h.getInformacaoMensalProduto(produto);
-       for(int i=0; i < 12; i++) {
-            InfoProdutoMes infoM = info.get(i);
-            System.out.printf("\nMês %d: ", i+1);
-            System.out.printf("\n   Número de compras em modo N: %d, com faturação de %.2f euros", infoM.getComprasN(), infoM.getFactN());
-            System.out.printf(" | Número de compras em modo P: %d, com faturação de %.2f", infoM.getComprasP(), infoM.getFactP());
+       for(int i=0; i<12; i++) {
+           ArrayList<Integer> compras=h.prodComprasModo(produto, i);
+           ArrayList<Double> fact=h.prodFactModo(produto, i);
+           System.out.printf("\nMês %d: ", i+1);
+           System.out.printf("\n   Total de compras em modo N: %d , com faturação de %.2f euros | Total de compras em modo P: %d, com faturação de %.2f euros", compras.get(0), fact.get(0), compras.get(1), fact.get(1));
        }
        Crono.stop();
        System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
+   }
+   
+   /**
+    * Produtos mais comprados por cliente, ordenados por ordem decrescente de quantidade (Opção 10 - Query 7)
+    */
+   public static void produtosMaisComprados(Hipermercado h) {
+       Scanner sc=new Scanner(System.in);
+       String cliente;
+       System.out.printf("\n\nInsira o código do cliente: "); cliente=sc.next();
+       Crono.start();
+       ArrayList<String> result=new ArrayList<String>();
+       TreeSet<InfoProduto> produtos=h.prodCliente(cliente);
+       Iterator<InfoProduto> it=produtos.iterator();
+       while(it.hasNext()) {
+           InfoProduto p=it.next().clone();
+           String s=new String(p.getCodigo()+ " -> Quantidade: " +p.getQuantidade());
+           result.add(s);
+       }
+       Crono.stop();
+       System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
+       navigation(result);
    }
    
    /**
