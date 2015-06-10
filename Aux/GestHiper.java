@@ -52,12 +52,15 @@ public class GestHiper
                     produtosMaisComprados(h);
                     break;
                 case 11:
+                    maisCompradosProd(h);
+                    break;
+                case 12:
                     break;
                 default:
                     System.out.printf("\nInsira uma opção válida!\n");
                     break;
             }
-        } while(opção!=11);
+        } while(opção!=12);
         System.out.printf("\n\nSaiu da aplicação! Adeus!");
     }
     
@@ -73,7 +76,8 @@ public class GestHiper
         System.out.printf("\n(8) Informação mensal de um produto");
         System.out.printf("\n(9) Número de compras de um produto, mês a mês, em modo N e em modo P");
         System.out.printf("\n(10) Produtos mais comprados por cliente");
-        System.out.printf("\n(11) Sair");
+        System.out.printf("\n(11) Lista dos X produtos mais comprados durante o ano");
+        System.out.printf("\n(12) Sair");
         System.out.printf("\n\n-------------------------------------------------------------------------------------------------------------------------");
     }
     
@@ -289,6 +293,25 @@ public class GestHiper
        Crono.stop();
        System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
        navigation(result);
+   }
+   
+   /**
+    * Lista dos X produtos mais comprados durante o ano (Opção 11 - Query 8)
+    */
+   public static void maisCompradosProd(Hipermercado h) {
+       Scanner sc=new Scanner(System.in);
+       int x, i=0;
+       System.out.printf("\n\nInsira o valor de X: "); x=sc.nextInt();
+       Crono.start();
+       TreeSet<InfoProduto> novo=h.prodMaisVendidos();
+       Iterator<InfoProduto> it=novo.iterator();
+       while(it.hasNext() && i<x) {
+           InfoProduto p=it.next().clone();
+           System.out.printf("\nProduto: %s -> Quantidade: %d", p.getCodigo(), p.getQuantidade());
+           i++;
+       }
+       Crono.stop();
+       System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
    }
    
    /**

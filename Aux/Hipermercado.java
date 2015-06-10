@@ -16,6 +16,7 @@ public class Hipermercado implements Serializable
     private ArrayList<ClientesMes> clientes_mes;
     private ArrayList<ProdutosMes> produtos_mes;
     private HashMap<String, TreeSet<InfoProduto>> produtosPorCliente;
+    private HashMap<String, TreeSet<InfoCliente>> clientesPorProduto;
     
     /**
      * Construtores
@@ -32,6 +33,7 @@ public class Hipermercado implements Serializable
             this.produtos_mes.add(i, new ProdutosMes());
         }
         this.produtosPorCliente=new HashMap<String, TreeSet<InfoProduto>>();
+        this.clientesPorProduto=new HashMap<String, TreeSet<InfoCliente>>();
     }
     
    public Hipermercado(Hipermercado h) {
@@ -42,6 +44,7 @@ public class Hipermercado implements Serializable
         this.clientes_mes=h.getClientesMes();
         this.produtos_mes=h.getProdutosMes();
         this.produtosPorCliente=h.getProdutosPorCliente();
+        this.clientesPorProduto=h.getClientesPorProduto();
    }
    
    /**
@@ -80,10 +83,26 @@ public class Hipermercado implements Serializable
        Iterator<Map.Entry<String, TreeSet<InfoProduto>>> it1=this.produtosPorCliente.entrySet().iterator();
        while(it1.hasNext()) {
            Map.Entry<String, TreeSet<InfoProduto>> elem=it1.next();
-           TreeSet<InfoProduto> aux2=new TreeSet<InfoProduto>(new QtdComparator());
+           TreeSet<InfoProduto> aux2=new TreeSet<InfoProduto>(new QtdProdComparator());
            Iterator<InfoProduto> it2=elem.getValue().iterator();
            while(it2.hasNext()) {
                InfoProduto p=it2.next().clone();
+               aux2.add(p);
+           }
+           aux1.put(elem.getKey(), aux2);
+       }
+       return aux1;
+   }
+   
+   public HashMap<String, TreeSet<InfoCliente>> getClientesPorProduto() {
+       HashMap<String, TreeSet<InfoCliente>> aux1=new HashMap<String, TreeSet<InfoCliente>>();
+       Iterator<Map.Entry<String, TreeSet<InfoCliente>>> it1=this.clientesPorProduto.entrySet().iterator();
+       while(it1.hasNext()) {
+           Map.Entry<String, TreeSet<InfoCliente>> elem=it1.next();
+           TreeSet<InfoCliente> aux2=new TreeSet<InfoCliente>(new QtdClntComparator());
+           Iterator<InfoCliente> it2=elem.getValue().iterator();
+           while(it2.hasNext()) {
+               InfoCliente p=it2.next().clone();
                aux2.add(p);
            }
            aux1.put(elem.getKey(), aux2);
@@ -193,7 +212,7 @@ public class Hipermercado implements Serializable
                     prod.leitura(codigo_cliente, codigo_produto, preco, quantidade_comprada, modo); this.produtos_mes.set(mes-1, prod.clone()); // produtos_mes
                     
                     if(!this.produtosPorCliente.containsKey(codigo_cliente)) { //produtosPorCliente
-                        TreeSet<InfoProduto> aux=new TreeSet<InfoProduto>(new QtdComparator());
+                        TreeSet<InfoProduto> aux=new TreeSet<InfoProduto>(new QtdProdComparator());
                         InfoProduto novo=new InfoProduto(codigo_produto, quantidade_comprada);
                         aux.add(novo.clone());
                         this.produtosPorCliente.put(codigo_cliente, aux);
@@ -203,6 +222,18 @@ public class Hipermercado implements Serializable
                         InfoProduto p=new InfoProduto(codigo_produto, quantidade_comprada);
                         arv.add(p.clone());
                         this.produtosPorCliente.put(codigo_cliente, arv);
+                    }
+                    if(!this.clientesPorProduto.containsKey(codigo_produto)) { //clientesPorProduto
+                        TreeSet<InfoCliente> auxNew=new TreeSet<InfoCliente>(new QtdClntComparator());
+                        InfoCliente clntNew=new InfoCliente(codigo_cliente, quantidade_comprada);
+                        auxNew.add(clntNew.clone());
+                        this.clientesPorProduto.put(codigo_produto, auxNew);
+                    }
+                    else {
+                        TreeSet<InfoCliente> arvNew=this.clientesPorProduto.get(codigo_produto);
+                        InfoCliente c=new InfoCliente(codigo_cliente, quantidade_comprada);
+                        arvNew.add(c.clone());
+                        this.clientesPorProduto.put(codigo_produto, arvNew);
                     }
                 }
                 else {
@@ -345,11 +376,25 @@ public class Hipermercado implements Serializable
     * Retorna o TreeSet de produtos comprados por cliente, ordenado por ordem decrescente de quantidade
     */
    public TreeSet<InfoProduto> prodCliente(String cliente) {
-       TreeSet<InfoProduto> novo=new TreeSet<InfoProduto>(new QtdComparator());
+       TreeSet<InfoProduto> novo=new TreeSet<InfoProduto>(new QtdProdComparator());
        Iterator<InfoProduto> it=this.produtosPorCliente.get(cliente).iterator();
        while(it.hasNext()) {
            InfoProduto p=it.next().clone();
            novo.add(p);
+       }
+       return novo;
+   }
+   
+   /**
+    * Retorna o TreeSet dos produtos mais comprados, ordenado por ordem decrescente de unidades compradas
+    */
+   public TreeSet<InfoProduto> prodMaisVendidos() {
+       TreeSet<InfoProduto> novo=new TreeSet<InfoProduto>(new QtdProdComparator());
+       Iterator<Map.Entry<String, TreeSet<InfoCliente>>> it=this.clientesPorProduto.entrySet().iterator();
+       while(it.hasNext()) {
+           Map.Entry<String, TreeSet<InfoCliente>> elem=it.next();
+           InfoProduto aux=new InfoProduto(elem.getKey(), elem.getValue().size());
+           novo.add(aux.clone());
        }
        return novo;
    }
