@@ -77,6 +77,13 @@ public class CatalogoProdutos implements Serializable
    }
    
    /**
+    * Guarda um produto que tenha sido comprado
+    */
+   public void guardaProduto(String codigo_produto) {
+       if(!this.produtos_comprados.contains(codigo_produto)) this.produtos_comprados.add(codigo_produto);
+   }
+   
+   /**
     * Verifica se um produto com um dado código existe no catálogo
     */
    public boolean existe(String code) {

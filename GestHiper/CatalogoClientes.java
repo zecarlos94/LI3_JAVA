@@ -77,6 +77,13 @@ public class CatalogoClientes implements Serializable
    }
    
    /**
+    * Guarda um cliente que tenha feito uma compra
+    */
+   public void guardaCliente(String codigo_cliente) {
+       if(!this.clientes_compradores.contains(codigo_cliente)) this.clientes_compradores.add(codigo_cliente);
+   }
+   
+   /**
     * Verifica se um cliente com um dado código existe no catálogo
     */
    public boolean existe(String code) {

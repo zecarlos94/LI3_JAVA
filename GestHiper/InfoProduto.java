@@ -1,72 +1,43 @@
-
 import java.util.*;
+import java.io.*;
 
-/**
- * Write a description of class InfoProduto here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
-public class InfoProduto
+public class InfoProduto implements Serializable
 {
-    private ArrayList<InfoProdutoMes> informacaoMensal;
+    private String codigo;
+    private int quantidade;
     
-    private int unidadesVendidas;
-    
-    private TreeSet<ClienteDespesa>  despesas; //Ordenado por quantidade de produtos comprados
-    
-    public InfoProduto(Compra compra)
-    {
-        informacaoMensal = new ArrayList<InfoProdutoMes>(12);
-        unidadesVendidas = 0;
-        despesas = new TreeSet<ClienteDespesa>(new ClienteDespesaQuantidadeCompara());
-        this.add(compra);
-        
-    }
-
-    public void add(Compra compra)
-    {
-        String cliente = new String(compra.getCodigoCliente());
-        boolean encontrou = false;
-        informacaoMensal.get( compra.getMes() - 1).add(compra);
-        
-        this.unidadesVendidas+= compra.getQuantidadeComprada();
-     
-        Iterator<ClienteDespesa> it = despesas.iterator();
-        while(it.hasNext() && !encontrou )
-        {
-             ClienteDespesa elem = it.next();
-             if(elem.getCliente().equals(cliente)) 
-                               { elem.add(compra); encontrou = true; }
-        }
-        if(!encontrou) despesas.add(new ClienteDespesa(compra));
-         
+    public InfoProduto() {
+        this.codigo="N/A";
+        this.quantidade=0;
     }
     
-    /**
-     *  Warning nesta função !!!
-     */
-
-    public int getClientesUnicos()
-    {
-        int i;
-        TreeSet clientes = new TreeSet<String>(new StringCompare());
-        for(i = 0; i < 12; i++){
-            TreeSet<String> clientesMensais = this.informacaoMensal.get(i).getClientes();
-            if(clientesMensais.size() > 0)clientes.addAll( clientesMensais );
-        }
-        return clientes.size();
-    }
-  
-    public int getUnidadesVendidas(){   return this.unidadesVendidas;}
-    
-   // Isto funciona ??? talvez
-    public TreeSet<ClienteDespesa> getDespesas(){   return new TreeSet<ClienteDespesa>(this.despesas);   }
-    
-    public ArrayList<InfoProdutoMes> getInformacaoMensal(){
-            ArrayList<InfoProdutoMes> clone = new ArrayList<InfoProdutoMes>(this.informacaoMensal);
-            return clone;
+    public InfoProduto(InfoProduto p) {
+        this.codigo=p.getCodigo();
+        this.quantidade=p.getQuantidade();
     }
     
+    public InfoProduto(String codigo, int quantidade) {
+        this.codigo=codigo;
+        this.quantidade=quantidade;
+    }
     
+    public String getCodigo() {
+        return this.codigo;
+    }
+    
+    public int getQuantidade() {
+        return this.quantidade;
+    }
+    
+    public void setCodigo(String codigo) {
+        this.codigo=codigo;
+    }
+    
+    public void setQuantidade(int quantidade) {
+        this.quantidade=quantidade;
+    }
+    
+    public InfoProduto clone() {
+        return new InfoProduto(this);
+    }
 }

@@ -10,6 +10,7 @@ public class Contabilidade implements Serializable
      * Variáveis de instância
      */
     private ArrayList<String> invalidComp;
+    private ArrayList<Integer> totalCompMes;
     private ArrayList<Double> factMes;
     private double faturacao_total;
     private int compras_gratis;
@@ -19,13 +20,19 @@ public class Contabilidade implements Serializable
      */
     public Contabilidade() {
         this.invalidComp=new ArrayList<String>();
-        this.factMes=new ArrayList<Double>();
+        this.totalCompMes=new ArrayList<Integer>();
+        this.factMes=new ArrayList<Double>(); 
+        for(int i=0; i<12; i++) {
+            this.factMes.add(i, 0.00);
+            this.totalCompMes.add(i, 0);
+        }
         this.faturacao_total=0;
         this.compras_gratis=0;
     }
     
     public Contabilidade(Contabilidade c) {
         this.invalidComp=c.getInvalidComp();
+        this.totalCompMes=c.getTotalCompMes();
         this.factMes=c.getFactMes();
         this.faturacao_total=c.getFaturacaoTotal();
         this.compras_gratis=c.getComprasGratis();
@@ -36,6 +43,10 @@ public class Contabilidade implements Serializable
      */
    public ArrayList<String> getInvalidComp() {
        return this.invalidComp;
+   }
+   
+   public ArrayList<Integer> getTotalCompMes() {
+       return this.totalCompMes;
    }
    
    public ArrayList<Double> getFactMes() {
@@ -57,6 +68,10 @@ public class Contabilidade implements Serializable
        this.invalidComp=invalidComp;
    }
    
+   public void setTotalCompMes(ArrayList<Integer> totalCompMes) {
+       this.totalCompMes=totalCompMes;
+   }
+   
    public void setFactMes(ArrayList<Double> factMes) {
        this.factMes=factMes;
    }
@@ -74,5 +89,17 @@ public class Contabilidade implements Serializable
     */
    public Contabilidade clone() {
        return new Contabilidade(this);
+   }
+   
+   /**
+    * Faz a leitura dos ficheiros e insere na Contabilidade
+    */
+   public void leitura(double preco, int quantidade_comprada, int mes) {
+       double fact=this.factMes.get(mes-1);
+       int comp=this.totalCompMes.get(mes-1);
+       this.faturacao_total+=preco*quantidade_comprada;
+       if(preco==0) this.compras_gratis++;
+       this.factMes.set(mes-1, fact+(preco*quantidade_comprada));
+       this.totalCompMes.set(mes-1, comp+1);
    }
 }

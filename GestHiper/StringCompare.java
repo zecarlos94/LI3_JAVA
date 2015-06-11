@@ -7,6 +7,8 @@ import java.io.Serializable;
 public class StringCompare implements Comparator<String>, Serializable
 {
    public int compare(String s1, String s2) {
-       return s1.compareTo(s2);
+       int res=s1.compareTo(s2);
+       if(res==0) return 1;
+       else return res;
    }
 }
