@@ -257,7 +257,7 @@ public class Hipermercado implements Serializable
     * Devolve o número de compras efetuadas num dado mês
     */
    public int comprasMes(int mes) {
-       return this.contabilidade.getTotalCompMes().get(mes-1);
+       return this.contabilidade.getTotalCompMes().get(mes);
    }
    
    /**
@@ -353,6 +353,15 @@ public class Hipermercado implements Serializable
    }
    
    /**
+    * Retorna o total anual faturado pelo produto
+    */
+   public double factAnualProd(String produto) {
+       double fact=0;
+       for(int i=0; i<12; i++) fact+=factProduto(produto, i);
+       return fact;
+   }
+   
+   /**
     * Retorna um array em que a primeira posição corresponde ao número de compras e modo N e a segunda em modo P
     */
    public ArrayList<Integer> prodComprasModo(String produto, int mes) {
@@ -377,10 +386,12 @@ public class Hipermercado implements Serializable
     */
    public TreeSet<InfoProduto> prodCliente(String cliente) {
        TreeSet<InfoProduto> novo=new TreeSet<InfoProduto>(new QtdProdComparator());
-       Iterator<InfoProduto> it=this.produtosPorCliente.get(cliente).iterator();
-       while(it.hasNext()) {
-           InfoProduto p=it.next().clone();
-           novo.add(p);
+       if(this.produtosPorCliente.containsKey(cliente)) {
+           Iterator<InfoProduto> it=this.produtosPorCliente.get(cliente).iterator();
+           while(it.hasNext()) {
+               InfoProduto p=it.next().clone();
+               novo.add(p);
+           }
        }
        return novo;
    }
@@ -395,6 +406,35 @@ public class Hipermercado implements Serializable
            Map.Entry<String, TreeSet<InfoCliente>> elem=it.next();
            InfoProduto aux=new InfoProduto(elem.getKey(), elem.getValue().size());
            novo.add(aux.clone());
+       }
+       return novo;
+   }
+   
+   /**
+    * Retorna o TreeSet dos clientes mais compradores, ordenado por ordem decrescente de unidades compradas
+    */
+   public TreeSet<InfoCliente> clntMaisCompradores() {
+       TreeSet<InfoCliente> novo=new TreeSet<InfoCliente>(new QtdClntComparator());
+       Iterator<Map.Entry<String, TreeSet<InfoProduto>>> it=this.produtosPorCliente.entrySet().iterator();
+       while(it.hasNext()) {
+           Map.Entry<String, TreeSet<InfoProduto>> elem=it.next();
+           InfoCliente aux=new InfoCliente(elem.getKey(), elem.getValue().size());
+           novo.add(aux.clone());
+       }
+       return novo;
+   }
+   
+   /**
+    * Retorna o TreeSet de clientes que compraram determinado produto, ordenado por ordem decrescente de quantidade
+    */
+   public TreeSet<InfoCliente> clntProduto(String produto) {
+       TreeSet<InfoCliente> novo=new TreeSet<InfoCliente>(new QtdClntComparator());
+       if(this.clientesPorProduto.containsKey(produto)) {
+           Iterator<InfoCliente> it=this.clientesPorProduto.get(produto).iterator();
+           while(it.hasNext()) {
+               InfoCliente p=it.next().clone();
+               novo.add(p);
+           }
        }
        return novo;
    }
