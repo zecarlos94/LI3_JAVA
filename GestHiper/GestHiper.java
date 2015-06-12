@@ -207,6 +207,7 @@ public class GestHiper
     * Imprime no ecrã a lista dos produtos ou clientes inválidos (Opções 4 e 5 - Queries 1 e 2)
     */
    public static void imprimeInvalidos(String type) {
+       Crono.start();
        TreeSet<String> lista=h.devolveLista(type);
        ArrayList<String> aux=new ArrayList<String>();
        Iterator<String> it=lista.iterator();
@@ -214,6 +215,8 @@ public class GestHiper
            String s=it.next();
            aux.add(s);
        }
+       Crono.stop();
+       System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
        navigation(aux);
        System.out.printf("\n\nTotal de %s inválidos: %d", type, lista.size());
    }
