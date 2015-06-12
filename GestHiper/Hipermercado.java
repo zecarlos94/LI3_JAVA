@@ -167,7 +167,7 @@ public class Hipermercado implements Serializable
                 
                 Contabilidade cont=this.getContabilidade();
                 
-                if(this.catalogo_produtos.existe(codigo_produto) && this.catalogo_clientes.existe(codigo_cliente)) {
+                if(this.catalogo_produtos.existe(codigo_produto) && this.catalogo_clientes.existe(codigo_cliente) && valida(preco, modo, mes)) {
                     CatalogoClientes cc=this.getCatalogoClientes(); CatalogoProdutos cp=this.getCatalogoProdutos(); 
                     cc.guardaCliente(codigo_cliente); this.setCatalogoClientes(cc); // catalogo_clientes
                     cp.guardaProduto(codigo_produto); this.setCatalogoProdutos(cp); // catalogo_produtos
@@ -213,6 +213,16 @@ public class Hipermercado implements Serializable
                 ex.printStackTrace();
             }
         }
+   }
+   
+   /**
+    * Valida o preço, o mês e o modo
+    */
+   public boolean valida(double preço, String modo, int mês) {
+       if(preço<0) return false;
+       else if(!modo.equals("N") && !modo.equals("P")) return false;
+       else if(mês<1 || mês>12) return false;
+       else return true;
    }
    
    /**
