@@ -1,9 +1,5 @@
 import java.util.*;
 import java.io.*;
-import java.lang.*;
-import com.sun.management.OperatingSystemMXBean;
-import java.lang.management.ManagementFactory;
-
 
 public class GestHiper
 {
@@ -112,9 +108,6 @@ public class GestHiper
         h.readCompras(fichCompras);
         Crono.stop();
         System.out.println("\n\nTempo de leitura: " +Crono.print()+ " segundos");
-        System.out.println("\n\nTempo de leitura: " +Crono.print()+ " segundos");
-      //  OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-      //  System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
     }
     
    /**
@@ -129,8 +122,6 @@ public class GestHiper
         oos.close();
         Crono.stop();
         System.out.println("\n\nTempo de escrita: " +Crono.print()+ " segundos");
-    //    OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-    //    System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
    }
    
    /**
@@ -144,17 +135,9 @@ public class GestHiper
         ois.close();
         Crono.stop();
         System.out.println("\n\nTempo de leitura: " +Crono.print()+ " segundos");
-   //     OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-    //    System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
         return h;
    }
    
-   private static final long MB = 1024L * 1024L;
-
-   public static long bytesToMbytes(long bytes) {
-    return bytes / MB;
-   }
-
    /**
     * Informações do hipermercado (Opção 2)
     */
@@ -167,21 +150,15 @@ public class GestHiper
        System.out.printf("\nNome do ficheiro de produtos: %s", prod.getProdutosNome());
        System.out.printf("\nNome do ficheiro de clientes: %s", clnt.getClientesNome());
        System.out.printf("\nTotal de produtos: %d", prod.getCatalogoProdutos().size());
-       System.out.printf("\nTotal de diferentes produtos comprados: %d", prod.getProdutosComprados().size());// mal 175480
-       System.out.printf("\nTotal de produtos não comprados: %d", prod.totalProdutosNaoComprados()); // mal 20104, deu o total de produtos
-       System.out.printf("\nTotal de clientes: %d", clnt.getCatalogoClientes().size()); 
-       System.out.printf("\nTotal de clientes que realizaram compras: %d", clnt.getClientesCompradores().size()); // mal 16384
-       System.out.printf("\nTotal de clientes que não fizeram compras: %d", clnt.totalClientesNaoCompradores()); //mal 0 troocadas
-       System.out.printf("\nTotal de ofertas: %d", cont.getComprasGratis()); //mal 217
-       System.out.printf("\nFaturação total: %.2f euros", cont.getFaturacaoTotal()); //mal 16461115.62
+       System.out.printf("\nTotal de diferentes produtos comprados: %d", prod.getProdutosComprados().size());
+       System.out.printf("\nTotal de produtos não comprados: %d", prod.totalProdutosNaoComprados());
+       System.out.printf("\nTotal de clientes: %d", clnt.getCatalogoClientes().size());
+       System.out.printf("\nTotal de clientes que realizaram compras: %d", clnt.getClientesCompradores().size());
+       System.out.printf("\nTotal de clientes que não fizeram compras: %d", clnt.totalClientesNaoCompradores());
+       System.out.printf("\nTotal de ofertas: %d", cont.getComprasGratis());
+       System.out.printf("\nFaturação total: %.2f euros", cont.getFaturacaoTotal());
        Crono.stop();
        System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
-       Runtime runtime = Runtime.getRuntime();
-       long memory = runtime.totalMemory() - runtime.freeMemory();
-       System.out.println("Used memory is bytes: " + memory);
-       System.out.println("Used memory is megabytes: "+ bytesToMbytes(memory));
-   //    OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-    //   System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
    }
    
    /**

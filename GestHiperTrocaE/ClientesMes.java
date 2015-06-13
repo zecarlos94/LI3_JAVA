@@ -15,7 +15,7 @@ public class ClientesMes implements Serializable
      * Construtores
      */
     public ClientesMes() {
-        this.clientes=new TreeSet<String>(new StringCompare());
+        this.clientes=new TreeSet<String>();
     }
     
     public ClientesMes(ClientesMes cm) {

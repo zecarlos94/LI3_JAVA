@@ -19,9 +19,9 @@ public class CatalogoClientes implements Serializable
      */
     public CatalogoClientes() {
         this.clientes_nome="N/A";
-        this.catalogo_clientes=new TreeSet<String>(new StringCompare());
-        this.clientes_compradores=new TreeSet<String>(new StringCompare());
-        this.clientes_invalidos=new TreeSet<String>(new StringCompare());
+        this.catalogo_clientes=new TreeSet<String>();
+        this.clientes_compradores=new TreeSet<String>();
+        this.clientes_invalidos=new TreeSet<String>();
     }
     
     public CatalogoClientes(CatalogoClientes c) {

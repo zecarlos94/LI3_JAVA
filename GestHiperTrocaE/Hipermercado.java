@@ -13,8 +13,8 @@ public class Hipermercado implements Serializable
     private CatalogoClientes catalogo_clientes;
     private CatalogoProdutos catalogo_produtos;
     private Contabilidade contabilidade;
-    private HashMap<String, TreeSet<InfoProduto>> produtosPorCliente;
-    private HashMap<String, TreeSet<InfoCliente>> clientesPorProduto;
+    private TreeMap<String,TreeSet<InfoProduto>> produtosPorCliente;
+    private TreeMap<String,TreeSet<InfoCliente>> clientesPorProduto;
     
     /**
      * Construtores
@@ -24,8 +24,8 @@ public class Hipermercado implements Serializable
         this.catalogo_clientes=new CatalogoClientes();
         this.catalogo_produtos=new CatalogoProdutos();
         this.contabilidade=new Contabilidade();
-        this.produtosPorCliente=new HashMap<String, TreeSet<InfoProduto>>();
-        this.clientesPorProduto=new HashMap<String, TreeSet<InfoCliente>>();
+        this.produtosPorCliente=new TreeMap<String,TreeSet<InfoProduto>>();
+        this.clientesPorProduto=new TreeMap<String,TreeSet<InfoCliente>>();
     }
     
    public Hipermercado(Hipermercado h) {
@@ -56,8 +56,8 @@ public class Hipermercado implements Serializable
        return this.contabilidade.clone();
    }
    
-   public HashMap<String, TreeSet<InfoProduto>> getProdutosPorCliente() {
-       HashMap<String, TreeSet<InfoProduto>> aux1=new HashMap<String, TreeSet<InfoProduto>>();
+   public TreeMap<String,TreeSet<InfoProduto>> getProdutosPorCliente() {
+       TreeMap<String,TreeSet<InfoProduto>> aux1=new TreeMap<String,TreeSet<InfoProduto>>();
        Iterator<Map.Entry<String, TreeSet<InfoProduto>>> it1=this.produtosPorCliente.entrySet().iterator();
        while(it1.hasNext()) {
            Map.Entry<String, TreeSet<InfoProduto>> elem=it1.next();
@@ -72,8 +72,8 @@ public class Hipermercado implements Serializable
        return aux1;
    }
    
-   public HashMap<String, TreeSet<InfoCliente>> getClientesPorProduto() {
-       HashMap<String, TreeSet<InfoCliente>> aux1=new HashMap<String, TreeSet<InfoCliente>>();
+   public TreeMap<String,TreeSet<InfoCliente>> getClientesPorProduto() {
+       TreeMap<String,TreeSet<InfoCliente>> aux1=new TreeMap<String,TreeSet<InfoCliente>>();
        Iterator<Map.Entry<String, TreeSet<InfoCliente>>> it1=this.clientesPorProduto.entrySet().iterator();
        while(it1.hasNext()) {
            Map.Entry<String, TreeSet<InfoCliente>> elem=it1.next();
@@ -118,7 +118,7 @@ public class Hipermercado implements Serializable
     * Efetua a leitura dos ficheiros de clientes e de produtos
     */
    public void readCatalogos(String ficheiro, String type) {
-        TreeSet<String> catalogo=new TreeSet<String>(new StringCompare());
+        TreeSet<String> catalogo=new TreeSet<String>();
         BufferedReader br=null;
         try {
             String line;

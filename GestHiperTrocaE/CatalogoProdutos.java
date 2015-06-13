@@ -19,9 +19,9 @@ public class CatalogoProdutos implements Serializable
      */
     public CatalogoProdutos() {
         this.produtos_nome="N/A";
-        this.catalogo_produtos=new TreeSet<String>(new StringCompare());
-        this.produtos_comprados=new TreeSet<String>(new StringCompare());
-        this.produtos_invalidos=new TreeSet<String>(new StringCompare());
+        this.catalogo_produtos=new TreeSet<String>();
+        this.produtos_comprados=new TreeSet<String>();
+        this.produtos_invalidos=new TreeSet<String>();
     }
     
     public CatalogoProdutos(CatalogoProdutos p) {
