@@ -1,0 +1,14 @@
+Contabilidade:
+4 * ArrayList Para Vectores
+
+Catalogos:
+3 * HashSet<String> para TreeSet<String>
+
+ClientesMes:
+HashSet<String> para TreeSet<String>
+
+Hipermercado:
+HashMap<String,TreeSet<InfoProduto>> para TreeMap<String,TreeSet<InfoProduto>>
+HashMap<String,TreeSet<InfoCliente>> para TreeMap<String,TreeSet<InfoCliente>>
+
+
