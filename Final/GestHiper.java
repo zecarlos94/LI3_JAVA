@@ -1,5 +1,11 @@
 import java.util.*;
 import java.io.*;
+import java.lang.*;
+/**
+*import com.sun.management.OperatingSystemMXBean;
+*import java.lang.management.ManagementFactory;
+*Servem para medir %CPU utilizado mas só funciona numa das JVM do grupo(Versão mais recente, provavelmente por ser JAVA8!!!!)
+*/
 
 public class GestHiper
 {
@@ -108,6 +114,10 @@ public class GestHiper
         h.readCompras(fichCompras);
         Crono.stop();
         System.out.println("\n\nTempo de leitura: " +Crono.print()+ " segundos");
+        /** Permitiria ver qual a %CPU utilizada por esta função
+        *OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+        *System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
+        **/
     }
     
    /**
@@ -122,6 +132,10 @@ public class GestHiper
         oos.close();
         Crono.stop();
         System.out.println("\n\nTempo de escrita: " +Crono.print()+ " segundos");
+        /** Permitiria ver qual a %CPU utilizada por esta função
+        *OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+        *System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
+        **/
    }
    
    /**
@@ -135,6 +149,10 @@ public class GestHiper
         ois.close();
         Crono.stop();
         System.out.println("\n\nTempo de leitura: " +Crono.print()+ " segundos");
+        /** Permitiria ver qual a %CPU utilizada por esta função
+        *OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+        *System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
+        **/
         return h;
    }
    
@@ -159,6 +177,14 @@ public class GestHiper
        System.out.printf("\nFaturação total: %.2f euros", cont.getFaturacaoTotal());
        Crono.stop();
        System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
+       Runtime runtime = Runtime.getRuntime();
+       long memory = runtime.totalMemory() - runtime.freeMemory();
+       System.out.println("Used memory is bytes: " + memory);
+       System.out.println("Used memory is megabytes: "+ bytesToMegabytes(memory));
+       /** Permitiria ver qual a %CPU utilizada por esta função
+        *OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+        *System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
+        **/
    }
    
    /**
