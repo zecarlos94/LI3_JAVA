@@ -9,10 +9,10 @@ public class Contabilidade implements Serializable
     /**
      * Variáveis de instância
      */
-    private ArrayList<String> invalidComp;
-    private ArrayList<Integer> totalCompMes;
-    private ArrayList<Double> factMes;
-    private ArrayList<ClientesMes> clientesMes;
+    private Vector<String> invalidComp;
+    private Vector<Integer> totalCompMes;
+    private Vector<Double> factMes;
+    private Vector<ClientesMes> clientesMes;
     private double faturacao_total;
     private int compras_gratis;
     
@@ -20,9 +20,9 @@ public class Contabilidade implements Serializable
      * Construtores
      */
     public Contabilidade() {
-        this.invalidComp=new ArrayList<String>();
-        this.totalCompMes=new ArrayList<Integer>();
-        this.factMes=new ArrayList<Double>(); 
+        this.invalidComp=new Vector<String>();
+        this.totalCompMes=new Vector<Integer>();
+        this.factMes=new Vector<Double>(); 
         this.clientesMes=initClientesMes();
         for(int i=0; i<12; i++) {
             this.factMes.add(i, 0.00);
@@ -44,20 +44,20 @@ public class Contabilidade implements Serializable
     /**
      * Getters
      */
-   public ArrayList<String> getInvalidComp() {
+   public Vector<String> getInvalidComp() {
        return this.invalidComp;
    }
    
-   public ArrayList<Integer> getTotalCompMes() {
+   public Vector<Integer> getTotalCompMes() {
        return this.totalCompMes;
    }
    
-   public ArrayList<Double> getFactMes() {
+   public Vector<Double> getFactMes() {
        return this.factMes;
    }
    
-   public ArrayList<ClientesMes> getClientesMes() {
-       ArrayList<ClientesMes> aux=new ArrayList<ClientesMes>();
+   public Vector<ClientesMes> getClientesMes() {
+       Vector<ClientesMes> aux=new Vector<ClientesMes>();
        for(ClientesMes cm: this.clientesMes) aux.add(cm.clone());
        return aux;
    }
@@ -73,20 +73,20 @@ public class Contabilidade implements Serializable
    /**
     * Setters
     */
-   public void setInvalidComp(ArrayList<String> invalidComp) {
+   public void setInvalidComp(Vector<String> invalidComp) {
        this.invalidComp=invalidComp;
    }
    
-   public void setTotalCompMes(ArrayList<Integer> totalCompMes) {
+   public void setTotalCompMes(Vector<Integer> totalCompMes) {
        this.totalCompMes=totalCompMes;
    }
    
-   public void setFactMes(ArrayList<Double> factMes) {
+   public void setFactMes(Vector<Double> factMes) {
        this.factMes=factMes;
    }
    
-   public void setClientesMes(ArrayList<ClientesMes> clientesMes) {
-       ArrayList<ClientesMes> aux=new ArrayList<ClientesMes>();
+   public void setClientesMes(Vector<ClientesMes> clientesMes) {
+       Vector<ClientesMes> aux=new Vector<ClientesMes>();
        for(ClientesMes cm: this.clientesMes) aux.add(cm.clone());
        this.clientesMes=aux;
    }
@@ -109,8 +109,8 @@ public class Contabilidade implements Serializable
    /**
     * Inicializa o clientesMes
     */
-   public ArrayList<ClientesMes> initClientesMes() {
-       ArrayList<ClientesMes> aux=new ArrayList<ClientesMes>(12);
+   public Vector<ClientesMes> initClientesMes() {
+       Vector<ClientesMes> aux=new Vector<ClientesMes>(12);
        for(int i=0; i<12; i++) {
            ClientesMes cm=new ClientesMes();
            aux.add(i, cm);
@@ -128,7 +128,7 @@ public class Contabilidade implements Serializable
        if(preco==0) this.compras_gratis++;
        this.factMes.set(mes-1, fact+(preco*quantidade_comprada));
        this.totalCompMes.set(mes-1, comp+1);
-       HashSet<String> clientes=this.clientesMes.get(mes-1).getClientes();
+       TreeSet<String> clientes=this.clientesMes.get(mes-1).getClientes();
        clientes.add(cliente);
        this.clientesMes.get(mes-1).setClientes(clientes);
    }

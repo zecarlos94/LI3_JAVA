@@ -10,18 +10,18 @@ public class CatalogoClientes implements Serializable
      * Variáveis de instância
      */
     private String clientes_nome;
-    private HashSet<String> catalogo_clientes;
-    private HashSet<String> clientes_compradores;
-    private HashSet<String> clientes_invalidos;
+    private TreeSet<String> catalogo_clientes;
+    private TreeSet<String> clientes_compradores;
+    private TreeSet<String> clientes_invalidos;
     
     /**
      * Construtores
      */
     public CatalogoClientes() {
         this.clientes_nome="N/A";
-        this.catalogo_clientes=new HashSet<String>();
-        this.clientes_compradores=new HashSet<String>();
-        this.clientes_invalidos=new HashSet<String>();
+        this.catalogo_clientes=new TreeSet<String>(new StringCompare());
+        this.clientes_compradores=new TreeSet<String>(new StringCompare());
+        this.clientes_invalidos=new TreeSet<String>(new StringCompare());
     }
     
     public CatalogoClientes(CatalogoClientes c) {
@@ -38,15 +38,15 @@ public class CatalogoClientes implements Serializable
        return this.clientes_nome;
    }
    
-   public HashSet<String> getCatalogoClientes() {
+   public TreeSet<String> getCatalogoClientes() {
        return this.catalogo_clientes;
    }
    
-   public HashSet<String> getClientesCompradores() {
+   public TreeSet<String> getClientesCompradores() {
        return this.clientes_compradores;
    }
    
-   public HashSet<String> getClientesInvalidos() {
+   public TreeSet<String> getClientesInvalidos() {
        return this.clientes_invalidos;
    }
    
@@ -57,15 +57,15 @@ public class CatalogoClientes implements Serializable
        this.clientes_nome=clientes_nome;
    }
    
-   public void setCatalogoClientes(HashSet<String> catalogo_clientes) {
+   public void setCatalogoClientes(TreeSet<String> catalogo_clientes) {
        this.catalogo_clientes=catalogo_clientes;
    }
    
-   public void setClientesCompradores(HashSet<String> clientes_compradores) {
+   public void setClientesCompradores(TreeSet<String> clientes_compradores) {
        this.clientes_compradores=clientes_compradores;
    }
    
-   public void setClientesInvalidos(HashSet<String> clientes_invalidos) {
+   public void setClientesInvalidos(TreeSet<String> clientes_invalidos) {
        this.clientes_invalidos=clientes_invalidos;
    }
    

@@ -118,7 +118,7 @@ public class Hipermercado implements Serializable
     * Efetua a leitura dos ficheiros de clientes e de produtos
     */
    public void readCatalogos(String ficheiro, String type) {
-        HashSet<String> catalogo=new HashSet<String>();
+        TreeSet<String> catalogo=new TreeSet<String>(new StringCompare());
         BufferedReader br=null;
         try {
             String line;
@@ -199,7 +199,7 @@ public class Hipermercado implements Serializable
                     }
                 }
                 else {
-                    ArrayList<String> s=cont.getInvalidComp();
+                    Vector<String> s=cont.getInvalidComp();
                     s.add(line);
                     this.contabilidade.setInvalidComp(s);
                 }

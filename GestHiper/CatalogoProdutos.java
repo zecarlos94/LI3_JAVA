@@ -10,18 +10,18 @@ public class CatalogoProdutos implements Serializable
      * Variáveis de instância
      */
     private String produtos_nome;
-    private HashSet<String> catalogo_produtos;
-    private HashSet<String> produtos_comprados;
-    private HashSet<String> produtos_invalidos;
+    private TreeSet<String> catalogo_produtos;
+    private TreeSet<String> produtos_comprados;
+    private TreeSet<String> produtos_invalidos;
     
     /**
      * Construtores
      */
     public CatalogoProdutos() {
         this.produtos_nome="N/A";
-        this.catalogo_produtos=new HashSet<String>();
-        this.produtos_comprados=new HashSet<String>();
-        this.produtos_invalidos=new HashSet<String>();
+        this.catalogo_produtos=new TreeSet<String>(new StringCompare());
+        this.produtos_comprados=new TreeSet<String>(new StringCompare());
+        this.produtos_invalidos=new TreeSet<String>(new StringCompare());
     }
     
     public CatalogoProdutos(CatalogoProdutos p) {
@@ -38,15 +38,15 @@ public class CatalogoProdutos implements Serializable
        return this.produtos_nome;
    }
    
-   public HashSet<String> getCatalogoProdutos() {
+   public TreeSet<String> getCatalogoProdutos() {
        return this.catalogo_produtos;
    }
    
-   public HashSet<String> getProdutosComprados() {
+   public TreeSet<String> getProdutosComprados() {
        return this.produtos_comprados;
    }
    
-   public HashSet<String> getProdutosInvalidos() {
+   public TreeSet<String> getProdutosInvalidos() {
        return this.produtos_invalidos;
    }
    
@@ -57,15 +57,15 @@ public class CatalogoProdutos implements Serializable
        this.produtos_nome=produtos_nome;
    }
    
-   public void setCatalogoProdutos(HashSet<String> catalogo_produtos) {
+   public void setCatalogoProdutos(TreeSet<String> catalogo_produtos) {
        this.catalogo_produtos=catalogo_produtos;
    }
    
-   public void setProdutosComprados(HashSet<String> produtos_comprados) {
+   public void setProdutosComprados(TreeSet<String> produtos_comprados) {
        this.produtos_comprados=produtos_comprados;
    }
    
-   public void setProdutosInvalidos(HashSet<String> produtos_invalidos) {
+   public void setProdutosInvalidos(TreeSet<String> produtos_invalidos) {
        this.produtos_invalidos=produtos_invalidos;
    }
    

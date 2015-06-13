@@ -9,13 +9,13 @@ public class ClientesMes implements Serializable
     /**
      * Variáveis de instância
      */
-    private HashSet<String> clientes;
+    private TreeSet<String> clientes;
     
     /**
      * Construtores
      */
     public ClientesMes() {
-        this.clientes=new HashSet<String>();
+        this.clientes=new TreeSet<String>(new StringCompare());
     }
     
     public ClientesMes(ClientesMes cm) {
@@ -25,14 +25,14 @@ public class ClientesMes implements Serializable
     /**
      * Getters
      */
-    public HashSet<String> getClientes() {
+    public TreeSet<String> getClientes() {
         return this.clientes;
     }
     
     /**
      * Setters
      */
-    public void setClientes(HashSet<String> clientes) {
+    public void setClientes(TreeSet<String> clientes) {
         this.clientes=clientes;
     }
     

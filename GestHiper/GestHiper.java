@@ -113,8 +113,8 @@ public class GestHiper
         Crono.stop();
         System.out.println("\n\nTempo de leitura: " +Crono.print()+ " segundos");
         System.out.println("\n\nTempo de leitura: " +Crono.print()+ " segundos");
-        OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-        System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
+      //  OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+      //  System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
     }
     
    /**
@@ -129,8 +129,8 @@ public class GestHiper
         oos.close();
         Crono.stop();
         System.out.println("\n\nTempo de escrita: " +Crono.print()+ " segundos");
-        OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-        System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
+    //    OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+    //    System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
    }
    
    /**
@@ -144,8 +144,8 @@ public class GestHiper
         ois.close();
         Crono.stop();
         System.out.println("\n\nTempo de leitura: " +Crono.print()+ " segundos");
-        OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-        System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
+   //     OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+    //    System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
         return h;
    }
    
@@ -167,21 +167,21 @@ public class GestHiper
        System.out.printf("\nNome do ficheiro de produtos: %s", prod.getProdutosNome());
        System.out.printf("\nNome do ficheiro de clientes: %s", clnt.getClientesNome());
        System.out.printf("\nTotal de produtos: %d", prod.getCatalogoProdutos().size());
-       System.out.printf("\nTotal de diferentes produtos comprados: %d", prod.getProdutosComprados().size());
-       System.out.printf("\nTotal de produtos não comprados: %d", prod.totalProdutosNaoComprados());
-       System.out.printf("\nTotal de clientes: %d", clnt.getCatalogoClientes().size());
-       System.out.printf("\nTotal de clientes que realizaram compras: %d", clnt.getClientesCompradores().size());
-       System.out.printf("\nTotal de clientes que não fizeram compras: %d", clnt.totalClientesNaoCompradores());
-       System.out.printf("\nTotal de ofertas: %d", cont.getComprasGratis());
-       System.out.printf("\nFaturação total: %.2f euros", cont.getFaturacaoTotal());
+       System.out.printf("\nTotal de diferentes produtos comprados: %d", prod.getProdutosComprados().size());// mal 175480
+       System.out.printf("\nTotal de produtos não comprados: %d", prod.totalProdutosNaoComprados()); // mal 20104, deu o total de produtos
+       System.out.printf("\nTotal de clientes: %d", clnt.getCatalogoClientes().size()); 
+       System.out.printf("\nTotal de clientes que realizaram compras: %d", clnt.getClientesCompradores().size()); // mal 16384
+       System.out.printf("\nTotal de clientes que não fizeram compras: %d", clnt.totalClientesNaoCompradores()); //mal 0 troocadas
+       System.out.printf("\nTotal de ofertas: %d", cont.getComprasGratis()); //mal 217
+       System.out.printf("\nFaturação total: %.2f euros", cont.getFaturacaoTotal()); //mal 16461115.62
        Crono.stop();
        System.out.println("\n\nTempo de execução: " +Crono.print()+ " segundos");
        Runtime runtime = Runtime.getRuntime();
        long memory = runtime.totalMemory() - runtime.freeMemory();
        System.out.println("Used memory is bytes: " + memory);
        System.out.println("Used memory is megabytes: "+ bytesToMbytes(memory));
-       OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
-       System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
+   //    OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+    //   System.out.println("% CPU que está a ocorrer na JVM "+ osBean.getProcessCpuLoad());
    }
    
    /**
@@ -212,7 +212,7 @@ public class GestHiper
     */
    public static void guardInvalidos(String filename) {
        Contabilidade cont=h.getContabilidade();
-       ArrayList<String> lista=cont.getInvalidComp();
+       Vector<String> lista=cont.getInvalidComp();
        try {
             FileWriter writer=new FileWriter(filename, true);
             BufferedWriter bufferedWriter=new BufferedWriter(writer);
